@@ -1,8 +1,9 @@
-
 # CW2-Team-Project
 
 **Formula 1 Data Explorer**  
 This project is part of a university coursework submission. It uses the [OpenF1 API](https://openf1.org/) to provide access to real-time and historical Formula 1 data. The application is structured into multiple roles and segments and demonstrates the use of full-stack web technologies.
+
+**🔗 Project Management**: [Jira Scrum Board](https://lloydrivers50.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog)
 
 ---
 
@@ -91,6 +92,3 @@ Although collaboration across teams is allowed, each deliverable in this reposit
 ## 🧾 License
 
 For academic use only. © 2025.
-```
-
-
