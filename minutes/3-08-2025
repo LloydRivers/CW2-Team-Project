@@ -1,0 +1,48 @@
+# 🗓️ Meeting Notes
+
+**Date:** 2 August 2025
+**Attendees:**
+
+- Lloyd Rivers (Project Manager)
+- Mena Bousfield-Milton (Backend Developer)
+- Will Marsden (Frontend Developer)
+
+---
+
+## 📝 Summary
+
+Mena informed the team about the limitations of the API mentioned in the tickets. Real-time data access is restricted to paid accounts, and free accounts only allow access to historical data. Therefore, the team decided to use the API from the project options PowerPoint ([https://f1api.dev/](https://f1api.dev/)) to ensure consistent data availability for the dashboards.
+
+---
+
+## 🔧 Actions Taken
+
+- Discussed API limitations and decided to use [https://f1api.dev/](https://f1api.dev/).
+- Noted the need to update project documentation.
+
+---
+
+## 🔗 Artifacts Shared
+
+- PowerPoint: none
+
+---
+
+## 🧠 Decisions
+
+- Utilize [https://f1api.dev/](https://f1api.dev/) for consistent data access.
+- Update project documentation to reflect API change.
+
+---
+
+## ⚠️ Risks or Blockers
+
+- Potential delays in integrating new API.
+- Documentation update required for stakeholders.
+
+---
+
+## ✅ Next Steps
+
+- Integrate [https://f1api.dev/](https://f1api.dev/) into the project.
+- Update documentation by \[Specific Deadline].
