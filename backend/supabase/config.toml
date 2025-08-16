@@ -43,6 +43,17 @@ entrypoint = "./functions/sessions/index.ts"
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/sessions/*.html" ]
 
+[functions.seasons]
+enabled = true
+verify_jwt = true
+import_map = "./functions/seasons/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/seasons/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/seasons/*.html" ]
+
 [functions.highlights]
 enabled = true
 verify_jwt = true
