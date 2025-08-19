@@ -2,30 +2,36 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import {createClient} from "npm:@supabase/supabase-js@2";
 import express from 'npm:express'
 
+let supabase;
+
 const router = express();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-let supabase;
+router.use((request,response,next) => {
+	const bearer = request.header("Authorization")
+	if (!bearer) {
+		response.status(401).send("Missing Authorization header")
+		return
+	}
 
-router.use( async (request,response,next) => {
-	try {
-		const bearer = request.header("Authorization")
-		if (!bearer) {
-			response.status(401).send("Missing Authorization header")
-			return
-		}
+	response.locals.bearerToken = bearer
 
-		// need to add the Authorization header to make the edge function use the user's JWT token so that the RLS works properly
-		supabase = createClient( Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"), {
-			global: {
-				headers: {
-					'Authorization': bearer
-				}
+	// need to add the Authorization header to make the edge function use the user's JWT token so that the RLS works properly
+	supabase = createClient( Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"), {
+		global: {
+			headers: {
+				'Authorization': bearer
 			}
-		})
+		}
+	})
 
-		const [,token] = bearer.split(" ")
+	next()
+})
+
+async function authorisation (request, response, next) {
+	try {
+		const [,token] = response.locals.bearerToken.split(" ")
 		if (!token) {
 			response.status(401).send('Invalid JWT token')
 			return
@@ -33,7 +39,7 @@ router.use( async (request,response,next) => {
 
 		const { data: {user} } = await supabase.auth.getUser(token)
 		if (!user) {
-			response.status(401).send('Invalid JWT token')
+			response.status(401).send('Failed to authenticate user')
 			return
 		}
 	
@@ -42,7 +48,7 @@ router.use( async (request,response,next) => {
 	} catch(error) {
 		response.status(500).send(error)
 	}
-})
+}
 
 router.get('/ratings/races', async (request, response) => {
     try {      
@@ -55,6 +61,7 @@ router.get('/ratings/races', async (request, response) => {
 
 		if (result.data.length < 1) {
 			response.status(404).send('No ratings found')
+			return
 		}
 
         response.status(200).send(result.data)
@@ -75,6 +82,7 @@ router.get('/ratings/races/:raceId', async (request, response) => {
 
 		if (result.data.length < 1) {
 			response.status(404).send('No ratings found for given race')
+			return
 		}
 
         response.status(200).send(result.data)
@@ -83,7 +91,7 @@ router.get('/ratings/races/:raceId', async (request, response) => {
     }
 });
 
-router.put('/ratings/races/:raceId', async (request, response) => {
+router.put('/ratings/races/:raceId', authorisation, async (request, response) => {
     try {
         const race_id = request.params.raceId
       	const {rating} = request.body
@@ -104,7 +112,7 @@ router.put('/ratings/races/:raceId', async (request, response) => {
     }
 });
 
-router.delete('/ratings/races/:raceId', async (request, response) => {
+router.delete('/ratings/races/:raceId', authorisation, async (request, response) => {
     try {
         const race_id = request.params.raceId
 
@@ -131,6 +139,7 @@ router.get('/ratings/drivers', async (request, response) => {
 
 		if (result.data.length < 1) {
 			response.status(404).send('No ratings found')
+			return
 		}
 
         response.status(200).send(result.data)
@@ -142,7 +151,7 @@ router.get('/ratings/drivers', async (request, response) => {
 router.get('/ratings/drivers/:driverId', async (request, response) => {
     try {
         const driver_id = request.params.driverId
-        const result = await supabase.from("driver-ratings").select().eq({driver_id})
+        const result = await supabase.from("driver-ratings").select().match({driver_id})
 
         if (result.error) {
           response.status(result.status).send(result.error)
@@ -151,6 +160,7 @@ router.get('/ratings/drivers/:driverId', async (request, response) => {
 
 		if (result.data.length < 1) {
 			response.status(404).send('No ratings found')
+			return
 		}
 
         response.status(200).send(result.data)
@@ -159,7 +169,7 @@ router.get('/ratings/drivers/:driverId', async (request, response) => {
     }
 });
 
-router.put('/ratings/races/:raceId/drivers/:driverId', async (request, response) => {
+router.put('/ratings/races/:raceId/drivers/:driverId', authorisation, async (request, response) => {
     try {
 		const race_id = request.params.raceId
         const driver_id = request.params.driverId
@@ -182,7 +192,7 @@ router.put('/ratings/races/:raceId/drivers/:driverId', async (request, response)
     }
 });
 
-router.delete('/ratings/races/:raceId/drivers/:driverId', async (request, response) => {
+router.delete('/ratings/races/:raceId/drivers/:driverId', authorisation, async (request, response) => {
     try {
         const race_id = request.params.raceId
 		const driver_id = request.params.driverId
