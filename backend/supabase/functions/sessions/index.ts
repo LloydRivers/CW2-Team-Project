@@ -9,36 +9,37 @@ const baseUrl = "https://f1connectapi.vercel.app/api"
 
 router.get('/sessions/latest', async (request, response) => {
   try {
-    let sessionPromises: Array<Promise<{ name: string; session: any; }>> = [];
-    let sessionNames = [ "fp1", "fp2", "fp3", "qualy", "race", "sprint/qualy", "sprint/race" ]
+    const result = await fetch(`${baseUrl}/current/last`)
+    const { race: round } = await result.json()
 
-    sessionNames.forEach(name => {
-      let data = fetch(`${baseUrl}/current/last/${name}`).then(async result => {
-        let session = await result.json()
-        return {name, session}
-      })
-      sessionPromises.push(data)
+    if (!round) {
+      response.status(404).send('Cannot find most recent round')
+      return 
+    }
+    
+    let sessions:  Array<{name: string, date: {date:string, time:string}}> = Object.entries(round[0].schedule) as unknown as Array<{name: string, date: {date:string, time:string}}>
+    sessions = sessions.filter(session => session[1].date !== null)
+
+    if (sessions.length < 1) {
+      response.status(404).send('No recent sessions found')
+      return
+    }
+
+    const latestSession = sessions.reduce((sessionA, sessionB) => {
+      let dateA = new Date(sessionA[1].date + 'T' + sessionA[1].time)
+      let dateB = new Date(sessionB[1].date + 'T' + sessionB[1].time)
+      return dateA > dateB ? sessionA : sessionB
     })
 
-    let sessions =  await Promise.all(sessionPromises)
-    sessions = sessions.filter(result => result.session.status !== 404) // remove sessions that haven't occured yet
-  
-    // sessions array contains the most recent event for each type of session 
-    let latest = sessions.reduce((sessionA, sessionB) => { // find which out of the sessions in the array was most recent
+    const sessionResult = await fetch(`${baseUrl}/current/last/${latestSession[0]}`)
+    const { races: session } = await sessionResult.json()
 
-      let [dateA, dateB] = [sessionA, sessionB].map(({ name, session }) => {
-        // the fields from the API have a different name for some of the session types
-        let changeField = ["race", "sprint/qualy", "sprint/race"].includes(name)
-        return new Date(session.races[changeField ? "time" :`${name}Time`] + session.races[changeField ? "date" :`${name}Date`])
-      }) 
+    if (!session) {
+      response.status(404).send('Could not get data for latest session')
+      return
+    }
 
-      if (isNaN(dateA.getTime())) return sessionB
-      if (isNaN(dateB.getTime())) return sessionA
-      return ( dateA > dateB ? sessionA : sessionB ) 
-    })
-
-    if (!latest) response.sendStatus(404)
-    response.send(latest.session.races)
+    response.send({'sessionType': latestSession[0], ...session})
   } catch (error) {
     response.status(500).send(error)
   }
