@@ -11,8 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.54.0",
-    "dotenv": "^17.2.1",
-    "express": "4.18.2",
     "supabase": "^2.33.9"
   }
 }
