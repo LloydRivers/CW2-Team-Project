@@ -17,7 +17,7 @@ router.get('/sessions/latest', async (request, response) => {
       return 
     }
     
-    let sessions:  Array<{name: string, date: {date:string, time:string}}> = Object.entries(round[0].schedule) as unknown as Array<{name: string, date: {date:string, time:string}}>
+    let sessions: Array<[string, {date:string, time:string}]> = Object.entries(round[0].schedule) as unknown as Array<[string, {date:string, time:string}]>
     sessions = sessions.filter(session => session[1].date !== null)
 
     if (sessions.length < 1) {
@@ -26,8 +26,8 @@ router.get('/sessions/latest', async (request, response) => {
     }
 
     const latestSession = sessions.reduce((sessionA, sessionB) => {
-      let dateA = new Date(sessionA[1].date + 'T' + sessionA[1].time)
-      let dateB = new Date(sessionB[1].date + 'T' + sessionB[1].time)
+      const dateA = new Date(sessionA[1].date + 'T' + sessionA[1].time)
+      const dateB = new Date(sessionB[1].date + 'T' + sessionB[1].time)
       return dateA > dateB ? sessionA : sessionB
     })
 

@@ -12,7 +12,7 @@ router.get('/highlights', async (request, response) => {
     const result = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC3kxJQ9RfaS5CKeYbbFMi4Q&maxResults=1&&q=Highlights&type=video&key=${YT_API_KEY}`)
     const data = await result.json()
 
-    let videoId = data.items[0].id.videoId
+    const videoId = data.items[0].id.videoId
 
     if (!videoId) {
       response.status(404).send('Could not get a highlights video')

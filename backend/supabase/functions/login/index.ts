@@ -8,15 +8,13 @@ router.use(express.urlencoded({ extended: true }));
 
 const supabase = createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"))
 
-// provided for testing purposes
-
 router.post('/login', async (request, response) => {
   try {
     const {email, password} = request.body
     const result = await supabase.auth.signInWithPassword({email, password})
 
     if (result.error) {
-      response.status(result.status).send(result.error)
+      response.status(result.error.status).send(result.error)
       return
 		}
 
@@ -32,7 +30,7 @@ router.post('/login/signup', async (request, response) => {
     const result = await supabase.auth.signUp({email, password})
     
     if (result.error) {
-      response.status(result.status).send(result.error)
+      response.status(result.error.status).send(result.error)
 			return
 		}
 

@@ -42,7 +42,6 @@ router.use(async(request,response,next) => {
 
 router.get('/profiles', async (request, response) => {
     try {
-        const userId = request.params.id
         const result = await supabase.from("profiles").select()
 
         if (result.error) {
