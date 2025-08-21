@@ -16,9 +16,12 @@ router.get('/drivers', async (request, response) => {
     }
     const result = await fetch(`${baseUrl}/drivers${name ? `/search?q=${name}` : ""}`)
     const { drivers } = await result.json()
-    if (drivers.length < 1) {
-      response.sendStatus(404)
+
+    if (drivers === undefined || drivers.length < 1) {
+      response.status(404).send('No drivers found')
+      return
     }
+
     response.send(drivers)
   } catch (error) {
     response.status(500).send(error)
@@ -30,8 +33,9 @@ router.get('/drivers/featured', async (request, response) => {
     const result = await fetch(`${baseUrl}/current/drivers`)
     const { drivers } = await result.json()
 
-    if (drivers.length < 1) {
-      response.sendStatus(404)
+    if (drivers === undefined || drivers.length < 1) {
+      response.status(404).send('No current drivers found')
+      return
     }
 
     const index = Math.round(Math.random() * 100) % drivers.length
@@ -46,8 +50,9 @@ router.get('/drivers/current', async (request, response) => {
     const result = await fetch(`${baseUrl}/current/drivers`)
     const { drivers } = await result.json()
 
-    if (drivers.length < 1) {
-        response.sendStatus(404)
+    if (drivers === undefined || drivers.length < 1) {
+        response.status(404).send('No current drivers found')
+        return
     }
     response.status(200).send(drivers)
   } catch (error) {
@@ -62,7 +67,8 @@ router.get('/drivers/id/:id', async (request, response) => {
       const { driver } = await result.json()
 
       if (!driver) {
-          response.sendStatus(404)
+          response.status(404).send('Driver not found')
+          return
       }
       response.status(200).send(driver)
     } catch (error) {

@@ -11,15 +11,15 @@ router.get('/seasons/:year', async (request, response) => {
    try {
       const year = request.params.year
       if (isNaN(year)) {
-        response.status(400).send({message: "Invalid year"})
+        response.status(400).send("Invalid year")
         return
       }
 
       const result = await fetch(`${baseUrl}/${year}`)
       const data = await result.json()
 
-      if (!data.championship || !data.races) {
-        response.status(data.status).send({message: data.message})
+      if (!data || !data.championship || !data.races) {
+        response.status(data.status).send(data.message)
         return
       }
 

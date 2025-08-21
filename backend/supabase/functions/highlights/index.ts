@@ -14,7 +14,9 @@ router.get('/highlights', async (request, response) => {
 
     let videoId = data.items[0].id.videoId
 
-    if (!videoId) response.sendStatus(404)
+    if (!videoId) {
+      response.status(404).send('Could not get a highlights video')
+    }
     response.send({'embedUrl': `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`})
   } catch (error) {
     response.status(500).send(error)

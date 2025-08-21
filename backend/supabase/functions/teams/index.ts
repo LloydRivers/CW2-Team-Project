@@ -12,8 +12,9 @@ router.get('/teams', async (request, response) => {
     const result = await fetch(`${baseUrl}/teams`)
     const { teams } = await result.json()
 
-    if (teams.length < 1) {
-      response.sendStatus(404)
+    if (teams === undefined || teams.length < 1) {
+      response.status(404).send('No teams found')
+      return
     }
     response.status(200).send(teams)
   } catch (error) {
@@ -28,7 +29,8 @@ router.get('/teams/id/:id', async (request, response) => {
       const { team } = await result.json()
 
       if (!team) {
-          response.sendStatus(404)
+          response.status(404).send("No team found for given ID")
+          return
       }
       response.status(200).send(team)
     } catch (error) {
@@ -41,8 +43,9 @@ router.get('/teams/featured', async (request, response) => {
     const result = await fetch(`${baseUrl}/current/teams`)
     const { teams } = await result.json()
 
-    if (teams.length < 1) {
-      response.sendStatus(404)
+    if (teams === undefined || teams.length < 1) {
+      response.status(404).send('No current teams found')
+      return
     }
 
     const index = Math.round(Math.random() * 100) % teams.length
@@ -57,8 +60,9 @@ router.get('/teams/current', async (request, response) => {
     const result = await fetch(`${baseUrl}/current/teams`)
     const { teams } = await result.json()
 
-    if (teams.length < 1) {
-        response.sendStatus(404)
+    if (teams === undefined || teams.length < 1) {
+        response.status(404).send('No current teams found')
+        return
     }
     response.status(200).send(teams)
   } catch (error) {
