@@ -1,0 +1,16 @@
+{
+    "api": "https://f1api.dev",
+    "url": "https://f1api.dev/api/teams/ferrari",
+    "total": 1,
+    "team": [
+        {
+            "teamId": "ferrari",
+            "teamName": "Scuderia Ferrari",
+            "teamNationality": "Italy",
+            "firstAppeareance": 1950,
+            "constructorsChampionships": 16,
+            "driversChampionships": 15,
+            "url": "https://en.wikipedia.org/wiki/Scuderia_Ferrari"
+        }
+    ]
+}
