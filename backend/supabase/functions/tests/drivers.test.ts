@@ -6,9 +6,6 @@ import router from "../drivers/index.ts"
 import drivers from "./mockResponses/drivers.json" with { type: "json" };
 import driver from "./mockResponses/driver.json" with { type: "json" };
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
-const supabaseKey = Deno.env.get('SUPABASE_API_KEY') ?? ''
-
 function mockFetch (response) {
   const mockedFetch = stub( globalThis, "fetch", () => ( Promise.resolve( 
       new Response( JSON.stringify(response),

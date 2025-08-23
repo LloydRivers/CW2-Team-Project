@@ -6,9 +6,6 @@ import router from "../teams/index.ts"
 import teams from "./mockResponses/teams.json" with { type: "json" };
 import team from "./mockResponses/team.json" with { type: "json" };
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
-const supabaseKey = Deno.env.get('SUPABASE_API_KEY') ?? ''
-
 function mockFetch (response) {
   const mockedFetch = stub( globalThis, "fetch", () => ( Promise.resolve( 
       new Response( JSON.stringify(response),

@@ -29,4 +29,4 @@ router.get('/seasons/:year', async (request, response) => {
     }
 });
 
-router.listen(3000, () => {})
+export default router.listen(3000, () => {})
