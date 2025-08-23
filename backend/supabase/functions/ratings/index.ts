@@ -1,12 +1,14 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import {createClient} from "npm:@supabase/supabase-js@2";
 import express from 'npm:express'
+import { corsHeaders } from '../_shared/cors.ts'
 
 let supabase;
 
 const router = express();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(corsHeaders)
 
 router.use((request,response,next) => {
 	const bearer = request.header("Authorization")
