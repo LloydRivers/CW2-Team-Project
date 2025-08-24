@@ -1,6 +1,6 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
-import type { SessionData } from "../types/types";
+import type { SessionData } from "../types/sessions";
 import { renderSessions } from "../ui/renderers/sessions";
 import { showError, showLoading } from "../ui/utils";
 
@@ -10,6 +10,7 @@ export async function loadSessions(): Promise<void> {
 
   try {
     const sessionsData = await apiCall<SessionData>("/sessions/latest");
+    console.log("Latest session data:", sessionsData);
     appData.sessions = sessionsData;
     renderSessions(sessionsData);
   } catch (error) {

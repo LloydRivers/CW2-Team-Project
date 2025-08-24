@@ -13,8 +13,6 @@ export function renderTeams(teams: Team[]): void {
 
   let html = "";
   teams.forEach((team) => {
-    console.log("Rendering team:", team);
-
     html += `
       <div class="card">
           <h3>${team.teamName}</h3>

@@ -10,6 +10,7 @@ export async function loadHighlights(): Promise<void> {
 
   try {
     const highlightsData = await apiCall<Highlight[]>("/highlights");
+    console.log("Highlights data:", highlightsData);
     appData.highlights = highlightsData;
     renderHighlights(highlightsData);
   } catch (error) {

@@ -1,4 +1,4 @@
-import type { Driver } from "../../types/types";
+import type { Driver } from "../../types/drivers";
 
 // Render drivers
 export function renderDrivers(drivers: Driver[]): void {

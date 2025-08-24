@@ -1,6 +1,6 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
-import type { Driver } from "../types/types";
+import type { Driver } from "../types/drivers";
 import { renderDrivers } from "../ui/renderers/drivers";
 import { showError, showLoading } from "../ui/utils";
 

@@ -1,4 +1,4 @@
-import type { SessionData } from "../../types/types";
+import type { SessionData } from "../../types/sessions";
 
 // Render sessions
 export function renderSessions(sessionData: SessionData): void {
@@ -15,55 +15,41 @@ export function renderSessions(sessionData: SessionData): void {
         <div class="card">
             <h3>⏱️ Latest Session</h3>
             <p><strong>Type:</strong> ${
-              sessionData.type || sessionData.session_type || "Unknown"
+              sessionData.sessionType || "Unknown"
             }</p>
+            <p><strong>Round:</strong> ${sessionData.round || "N/A"}</p>
             <p><strong>Circuit:</strong> ${
-              sessionData.circuit || sessionData.track || "N/A"
+              sessionData.circuit.circuitName || "N/A"
             }</p>
-            <p><strong>Date:</strong> ${
-              sessionData.date || sessionData.session_date || "N/A"
+            <p><strong>Country:</strong> ${
+              sessionData.circuit.country || "N/A"
             }</p>
-            <p><strong>Weather:</strong> ${sessionData.weather || "N/A"}</p>
-            <p><strong>Track Temperature:</strong> ${
-              sessionData.track_temp || "N/A"
-            }</p>
+            <p><strong>Date:</strong> ${sessionData.date || "N/A"}</p>
+            <p><strong>Time:</strong> ${sessionData.time || "N/A"}</p>
+            <p><a href="${sessionData.url}" target="_blank">More Info</a></p>
         </div>
     `;
 
   // Add session results if available
-  if (sessionData.results && Array.isArray(sessionData.results)) {
-    html += '<div class="card"><h3>📊 Session Results</h3>';
+  if (sessionData.results && sessionData.results.length > 0) {
+    html += '<div class="card"><h3>📊 Session Results (Top 10)</h3>';
     sessionData.results.slice(0, 10).forEach((result, index) => {
       html += `
-                <div class="driver-card">
-                    <div class="driver-number">${index + 1}</div>
-                    <div>
-                        <p><strong>${result.driver || "Driver"}</strong></p>
-                        <p>Time: ${result.time || result.lap_time || "N/A"}</p>
-                        <p>Gap: ${result.gap || "N/A"}</p>
-                    </div>
-                </div>
-            `;
+        <div class="driver-card">
+            <div class="driver-number">${index + 1}</div>
+            <div>
+                <p><strong>${result.driver.name} ${
+        result.driver.surname
+      }</strong> (${result.driver.nationality})</p>
+                <p>Team: ${result.team.teamName}</p>
+                <p>Position: ${result.position ?? "N/A"}</p>
+                <p>Time: ${result.time || "N/A"}</p>
+                <p>Points: ${result.points}</p>
+            </div>
+        </div>
+      `;
     });
     html += "</div>";
-  }
-
-  // Add fastest laps if available
-  if (sessionData.fastest_lap) {
-    html += `
-            <div class="card">
-                <h3>🚀 Fastest Lap</h3>
-                <p><strong>Driver:</strong> ${
-                  sessionData.fastest_lap.driver || "N/A"
-                }</p>
-                <p><strong>Time:</strong> ${
-                  sessionData.fastest_lap.time || "N/A"
-                }</p>
-                <p><strong>Speed:</strong> ${
-                  sessionData.fastest_lap.speed || "N/A"
-                }</p>
-            </div>
-        `;
   }
 
   container.innerHTML = html;

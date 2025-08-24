@@ -1,7 +1,7 @@
-import type { Season } from "../../types/types";
+import type { SeasonData } from "../../types/seasons";
 
 // Render seasons
-export function renderSeasons(seasonData: Season): void {
+export function renderSeasons(seasonData: SeasonData): void {
   const container = document.getElementById("seasons-content");
   if (!container) return;
 
@@ -11,36 +11,32 @@ export function renderSeasons(seasonData: Season): void {
     return;
   }
 
-  let html = `
-        <div class="card">
-            <h3>🏁 2025 Formula 1 Season</h3>
-            <p><strong>Status:</strong> ${seasonData.status || "Active"}</p>
-            <p><strong>Races:</strong> ${
-              seasonData.race_count || seasonData.races || "TBD"
-            }</p>
-            <p><strong>Current Round:</strong> ${
-              seasonData.current_round || "TBD"
-            }</p>
-            <p><strong>Champion:</strong> ${seasonData.champion || "TBD"}</p>
-        </div>
-    `;
+  console.log("Rendering season:", seasonData);
 
-  // Add races if available
+  let html = `
+    <div class="card">
+        <h3>🏁 ${seasonData.championship.championshipName} (${seasonData.championship.year})</h3>
+        <p><a href="${seasonData.championship.url}" target="_blank">Championship Info</a></p>
+    </div>
+  `;
+
   if (seasonData.races && Array.isArray(seasonData.races)) {
     seasonData.races.forEach((race) => {
       html += `
-                <div class="card">
-                    <h3>🏆 ${race.name || "Grand Prix"}</h3>
-                    <p><strong>Circuit:</strong> ${race.circuit || "N/A"}</p>
-                    <p><strong>Date:</strong> ${race.date || "TBD"}</p>
-                    <p><strong>Country:</strong> ${race.country || "N/A"}</p>
-                    ${
-                      race.winner
-                        ? `<p><strong>Winner:</strong> ${race.winner}</p>`
-                        : ""
-                    }
-                </div>
-            `;
+        <div class="card">
+            <h3>🏆 ${race.raceName}</h3>
+            <p><strong>Circuit:</strong> ${race.circuit.circuitName}</p>
+            <p><strong>Country:</strong> ${race.circuit.country}</p>
+            <p><strong>Date:</strong> ${race.schedule.race.date} ${
+        race.schedule.race.time
+      }</p>
+            ${
+              race.winner
+                ? `<p><strong>Winner:</strong> ${race.winner.name} ${race.winner.surname}</p>`
+                : ""
+            }
+        </div>
+      `;
     });
   }
 
