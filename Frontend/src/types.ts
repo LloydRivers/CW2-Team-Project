@@ -9,16 +9,36 @@ export interface Driver {
   position?: number;
 }
 
+export interface FeaturedDriver {
+  driverId: string;
+  name: string;
+  surname: string;
+  nationality: string;
+  birthday: string;
+  number: number | null;
+  shortName: string | null;
+  url: string;
+  teamId: string;
+}
+
+export interface FeaturedTeam {
+  teamId: string;
+  teamName: string;
+  teamNationality: string;
+  firstAppeareance: number | null;
+  constructorsChampionships: number | null;
+  driversChampionships: number | null;
+  url: string;
+}
+
 export interface Team {
-  name?: string;
-  team_name?: string;
-  base?: string;
-  headquarters?: string;
-  points?: number;
-  team_principal?: string;
-  principal?: string;
-  drivers?: string;
-  position?: number;
+  teamId: string;
+  teamName: string;
+  teamNationality: string;
+  firstAppeareance: string | null;
+  constructorsChampionships: number | null;
+  driversChampionships: number | null;
+  url: string;
 }
 
 export interface Season {
@@ -73,10 +93,10 @@ export interface SessionData {
 
 export interface AppData {
   drivers: Driver[];
+  featuredDrivers: FeaturedDriver | null;
+  featuredTeams: FeaturedTeam | null;
+  highlights: Highlight | null;
   teams: Team[];
   seasons: Season | null;
-  highlights: Highlight[];
   sessions: SessionData | null;
-  featuredDrivers: Driver[];
-  featuredTeams: Team[];
 }

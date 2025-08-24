@@ -13,28 +13,30 @@ export function renderTeams(teams: Team[]): void {
 
   let html = "";
   teams.forEach((team) => {
+    console.log("Rendering team:", team);
+
     html += `
-            <div class="card">
-                <h3>${team.name || team.team_name || "Unknown Team"}</h3>
-                <p><strong>Base:</strong> ${
-                  team.base || team.headquarters || "N/A"
-                }</p>
-                <p><strong>Points:</strong> ${team.points || "0"}</p>
-                <p><strong>Principal:</strong> ${
-                  team.team_principal || team.principal || "N/A"
-                }</p>
-                ${
-                  team.drivers
-                    ? `<p><strong>Drivers:</strong> ${team.drivers}</p>`
-                    : ""
-                }
-                ${
-                  team.position
-                    ? `<p><strong>Championship Position:</strong> ${team.position}</p>`
-                    : ""
-                }
-            </div>
-        `;
+      <div class="card">
+          <h3>${team.teamName}</h3>
+          <p><strong>Nationality:</strong> ${team.teamNationality}</p>
+          ${
+            team.firstAppeareance
+              ? `<p><strong>First Appearance:</strong> ${team.firstAppeareance}</p>`
+              : ""
+          }
+          ${
+            team.constructorsChampionships !== null
+              ? `<p><strong>Constructors Championships:</strong> ${team.constructorsChampionships}</p>`
+              : ""
+          }
+          ${
+            team.driversChampionships !== null
+              ? `<p><strong>Drivers Championships:</strong> ${team.driversChampionships}</p>`
+              : ""
+          }
+          <p><a href="${team.url}" target="_blank">More Info</a></p>
+      </div>
+    `;
   });
 
   container.innerHTML = html;

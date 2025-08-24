@@ -13,7 +13,7 @@ export function addVisualEffects(): void {
   });
   // Reset card background on mouse leave
   document.addEventListener("mouseleave", (e) => {
-    const target = e.target as HTMLElement | null;
+      const target = e.target as HTMLElement | null;
     if (!target || !("closest" in target)) return; // Guard
 
     const card = target.closest(".card") as HTMLElement | null;

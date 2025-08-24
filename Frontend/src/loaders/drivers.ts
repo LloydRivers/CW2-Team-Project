@@ -15,7 +15,6 @@ export async function loadDrivers(): Promise<void> {
         apiCall<Driver[]>("/drivers/current"),
         apiCall<Driver[]>("/drivers/featured"),
       ]);
-
     let drivers: Driver[] = [];
     if (allDrivers.status === "fulfilled") drivers = allDrivers.value;
     else if (currentDrivers.status === "fulfilled")

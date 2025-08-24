@@ -19,7 +19,6 @@ export function startApp() {
   setupTeamSearch();
   setupNetworkHandlers();
   setupKeyboardShortcuts();
-
   // Load initial dashboard data
   loadDashboard();
 

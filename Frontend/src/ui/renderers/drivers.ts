@@ -13,6 +13,7 @@ export function renderDrivers(drivers: Driver[]): void {
 
   let html = "";
   drivers.forEach((driver, index) => {
+    console.log("Rendering driver:", driver);
     html += `
             <div class="card">
                 <div class="driver-card">
