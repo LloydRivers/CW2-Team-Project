@@ -1,4 +1,4 @@
-import type { Driver } from "../../types";
+import type { Driver } from "../../types/types";
 
 // Render drivers
 export function renderDrivers(drivers: Driver[]): void {
@@ -22,16 +22,17 @@ export function renderDrivers(drivers: Driver[]): void {
                     }</div>
                     <div>
                         <h3>${
-                          driver.name || driver.full_name || "Unknown Driver"
+                          driver.name + " " + driver.surname || "Unknown Driver"
                         }</h3>
-                        <p><strong>Team:</strong> ${driver.team || "N/A"}</p>
-                        <p><strong>Nationality:</strong> ${
+                        <p><strong>Nation:</strong> ${
                           driver.nationality || "N/A"
                         }</p>
-                        <p><strong>Points:</strong> ${driver.points || "0"}</p>
+                        <p><strong>Birthday:</strong> ${
+                          driver.birthday || "0"
+                        }</p>
                         ${
-                          driver.position
-                            ? `<p><strong>Position:</strong> ${driver.position}</p>`
+                          driver.driverId
+                            ? `<p><strong>driverId:</strong> ${driver.driverId}</p>`
                             : ""
                         }
                     </div>

@@ -1,4 +1,4 @@
-import type { AppData } from "../types";
+import type { AppData } from "../types/types";
 
 // Global data storage
 export let appData: AppData = {

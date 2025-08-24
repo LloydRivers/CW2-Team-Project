@@ -1,6 +1,6 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
-import type { Team } from "../types";
+import type { Team } from "../types/types";
 import { renderTeams } from "../ui/renderers/teams";
 import { showError, showLoading } from "../ui/utils";
 

@@ -1,4 +1,4 @@
-import type { Highlight } from "../../types";
+import type { Highlight } from "../../types/types";
 // Render highlights
 export function renderHighlights(highlights: Highlight[]): void {
   const container = document.getElementById("highlights-content");

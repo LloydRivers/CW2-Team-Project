@@ -1,39 +1,32 @@
-export interface AppData {
-  drivers: Driver[];
-  teams: Team[];
-  seasons: Season | null;
-  highlights: Highlight[];
-  sessions: SessionData | null;
-  featuredDrivers: Driver[];
-  featuredTeams: Team[];
-}
-
 export interface Driver {
-  name?: string;
-  full_name?: string;
-  number?: number;
-  team?: string;
-  nationality?: string;
-  points?: number;
-  position?: number;
+  driverId: string;
+  name: string;
+  surname: string;
+  nationality: string;
+  birthday: string;
+  number: number | null;
+  shortName: string | null;
+  url: string;
 }
 
-export interface Team {
-  name?: string;
-  team_name?: string;
-  base?: string;
-  headquarters?: string;
-  points?: number;
-  team_principal?: string;
-  principal?: string;
-  drivers?: string;
-  position?: number;
+export interface FeaturedDriver extends Driver {
+  teamId: string;
 }
+export interface Team {
+  teamId: string;
+  teamName: string;
+  teamNationality: string;
+  firstAppeareance: string | null;
+  constructorsChampionships: number | null;
+  driversChampionships: number | null;
+  url: string;
+}
+
+export interface FeaturedTeam extends Team {}
 
 export interface Season {
   status?: string;
   race_count?: number;
-  // races?: number;
   current_round?: string;
   champion?: string;
   races?: Race[];
@@ -55,7 +48,7 @@ export interface Highlight {
   video_url?: string;
 }
 
-export interface SessionResult {
+interface SessionResult {
   driver?: string;
   time?: string;
   lap_time?: string;
@@ -79,4 +72,14 @@ export interface SessionData {
   track_temp?: string;
   results?: SessionResult[];
   fastest_lap?: FastestLap;
+}
+
+export interface AppData {
+  drivers: Driver[];
+  featuredDrivers: FeaturedDriver | null;
+  featuredTeams: FeaturedTeam | null;
+  highlights: Highlight | null;
+  teams: Team[];
+  seasons: Season | null;
+  sessions: SessionData | null;
 }

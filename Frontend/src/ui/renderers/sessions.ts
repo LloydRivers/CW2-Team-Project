@@ -1,4 +1,4 @@
-import type { SessionData } from "../../types";
+import type { SessionData } from "../../types/types";
 
 // Render sessions
 export function renderSessions(sessionData: SessionData): void {

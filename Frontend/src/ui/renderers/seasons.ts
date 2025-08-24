@@ -1,4 +1,4 @@
-import type { Season } from "../../types";
+import type { Season } from "../../types/types";
 
 // Render seasons
 export function renderSeasons(seasonData: Season): void {

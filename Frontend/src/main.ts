@@ -6,7 +6,7 @@ import { loadHighlights } from "./loaders/highlights";
 import { loadSeasons } from "./loaders/seasons";
 import { loadSessions } from "./loaders/sessions";
 import { loadTeams } from "./loaders/teams";
-import type { AppData } from "./types";
+import type { AppData } from "./types/types";
 
 import { startApp } from "./app";
 

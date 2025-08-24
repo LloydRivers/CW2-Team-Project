@@ -1,6 +1,6 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
-import type { SessionData } from "../types";
+import type { SessionData } from "../types/types";
 import { renderSessions } from "../ui/renderers/sessions";
 import { showError, showLoading } from "../ui/utils";
 

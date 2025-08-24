@@ -6,7 +6,7 @@ import type {
   Highlight,
   FeaturedDriver,
   FeaturedTeam,
-} from "../types";
+} from "../types/types";
 import { renderDashboardStats } from "../ui/renderers/dashboard-statistics";
 import { showError, showLoading } from "../ui/utils";
 

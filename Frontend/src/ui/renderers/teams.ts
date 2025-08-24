@@ -1,4 +1,4 @@
-import type { Team } from "../../types";
+import type { Team } from "../../types/types";
 
 // Render teams
 export function renderTeams(teams: Team[]): void {
