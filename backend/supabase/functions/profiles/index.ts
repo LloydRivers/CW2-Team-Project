@@ -1,50 +1,20 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import {createClient} from "npm:@supabase/supabase-js@2";
 import express from 'npm:express'
 import { corsHeaders } from '../_shared/cors.ts'
+import { authorisation } from '../_shared/authorisation.ts'
+import { useToken } from '../_shared/useToken.ts'
 
 const router = express();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 router.use(corsHeaders)
+router.use(useToken)
+router.use(authorisation)
 
-let supabase;
-
-router.use(async(request,response,next) => {
-    const bearer = request.header("Authorization")
-    if (!bearer) {
-        response.status(401).send("Missing Authorization header")
-        return
-    } 
-
-    // need to add the Authorization header to make the edge function use the user's JWT token so that the RLS works properly
-    supabase = createClient( Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"), {
-        global: {
-            headers: {
-                'Authorization': bearer
-            }
-        }
-    })
-
-    const [,token] = bearer.split(" ")
-    if (!token) {
-        response.status(401).send('Invalid JWT token')
-        return
-    }
-
-    const { data: {user} } = await supabase.auth.getUser(token)
-    if (!user) {
-        response.status(401).send('Failed to authenticate user')
-        return
-    }
-
-    response.locals.user_id = user.id
-    next()
-})
 
 router.get('/profiles', async (request, response) => {
     try {
-        const result = await supabase.from("profiles").select()
+        const result = await response.locals.supabase.from("profiles").select()
 
         if (result.error) {
             response.status(result.status).send(result.error)
@@ -75,7 +45,7 @@ router.put('/profiles', async (request, response) => {
             favourite_team: data.favourite_team
         }
 
-        const result = await supabase.from("profiles").upsert(updatedData)
+        const result = await response.locals.supabase.from("profiles").upsert(updatedData)
 
         if (result.error) {
             response.status(result.status).send(result.error)
