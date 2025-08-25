@@ -1,7 +1,7 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
 import type { Team } from "../types/types";
-import { renderTeams } from "../ui/renderers/teams";
+import { renderTeams } from "../ui/renders/teams";
 import { showError, showLoading } from "../ui/utils";
 
 // Load teams data

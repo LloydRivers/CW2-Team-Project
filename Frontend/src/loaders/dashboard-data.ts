@@ -7,7 +7,7 @@ import type {
   FeaturedDriver,
   FeaturedTeam,
 } from "../types/types";
-import { renderDashboardStats } from "../ui/renderers/dashboard-statistics";
+import { renderDashboardStats } from "../ui/renders/dashboard-statistics";
 import { showError, showLoading } from "../ui/utils";
 
 // Load dashboard data
@@ -25,14 +25,6 @@ export async function loadDashboard(): Promise<void> {
         apiCall<FeaturedTeam>("/teams/featured"),
         apiCall<Highlight[]>("/highlights"),
       ]);
-
-    console.log("status calls are", {
-      drivers: drivers.status,
-      teams: teams.status,
-      featuredDrivers: featuredDrivers,
-      featuredTeams: featuredTeams.status,
-      highlights: highlights,
-    });
 
     // Store data
     if (drivers.status === "fulfilled") appData.drivers = drivers.value;

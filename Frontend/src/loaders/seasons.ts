@@ -1,7 +1,7 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
 import type { SeasonData } from "../types/seasons";
-import { renderSeasons } from "../ui/renderers/seasons";
+import { renderSeasons } from "../ui/renders/seasons";
 import { showError, showLoading } from "../ui/utils";
 
 // Load seasons data

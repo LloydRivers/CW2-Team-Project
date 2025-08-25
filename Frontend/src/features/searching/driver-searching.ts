@@ -1,5 +1,5 @@
 import { appData } from "../../data/appData";
-import { renderDrivers } from "../../ui/renderers/drivers";
+import { renderDrivers } from "../../ui/renders/drivers";
 
 // Search functionality for drivers
 export function setupDriverSearch(): void {

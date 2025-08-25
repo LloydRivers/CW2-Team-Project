@@ -1,7 +1,7 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
 import type { SessionData } from "../types/sessions";
-import { renderSessions } from "../ui/renderers/sessions";
+import { renderSessions } from "../ui/renders/sessions";
 import { showError, showLoading } from "../ui/utils";
 
 // Load sessions data

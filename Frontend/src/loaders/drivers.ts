@@ -1,7 +1,7 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
 import type { Driver } from "../types/drivers";
-import { renderDrivers } from "../ui/renderers/drivers";
+import { renderDrivers } from "../ui/renders/drivers";
 import { showError, showLoading } from "../ui/utils";
 
 // Load drivers data
@@ -15,9 +15,6 @@ export async function loadDrivers(): Promise<void> {
         apiCall<Driver[]>("/drivers/featured"),
         apiCall<Driver[]>("/drivers/current"),
       ]);
-    console.log("allDrivers is: ", allDrivers);
-    console.log("currentDrivers is: ", currentDrivers);
-    console.log("featuredDrivers is: ", featuredDrivers);
 
     let drivers: Driver[] = [];
     if (allDrivers.status === "fulfilled") drivers = allDrivers.value;

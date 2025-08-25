@@ -1,5 +1,5 @@
 import { appData } from "../../data/appData";
-import { renderTeams } from "../../ui/renderers/teams";
+import { renderTeams } from "../../ui/renders/teams";
 
 // Search functionality for teams
 export function setupTeamSearch(): void {
