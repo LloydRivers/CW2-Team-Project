@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formula 1 Hub</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/auth-modal.css" />
+    <link rel="stylesheet" href="./css/components.css" />
   </head>
   <body>
     <header class="header">
@@ -17,6 +19,10 @@
           <a href="#" class="nav-link" data-section="seasons">Seasons</a>
           <a href="#" class="nav-link" data-section="highlights">Highlights</a>
           <a href="#" class="nav-link" data-section="sessions">Sessions</a>
+          <a href="#" class="nav-link" id="login-btn">Login</a>
+          <a href="#" class="nav-link" id="logout-btn" style="display: none"
+            >Logout</a
+          >
         </div>
       </nav>
     </header>
@@ -111,6 +117,27 @@
           <div class="loading"><div class="spinner"></div></div>
         </div>
       </section>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-auth" class="close-btn">&times;</span>
+        <h2 id="auth-title">Login</h2>
+        <form id="auth-form">
+          <input type="email" id="auth-email" placeholder="Email" required />
+          <input
+            type="password"
+            id="auth-password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <p id="auth-toggle-text">
+          Don’t have an account? <a href="#" id="toggle-auth">Sign up</a>
+        </p>
+      </div>
     </div>
 
     <script src="./src/main.ts" type="module"></script>
