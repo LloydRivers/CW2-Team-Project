@@ -9,6 +9,7 @@
     "jsr:@std/fs@^1.0.19": "1.0.19",
     "jsr:@std/internal@^1.0.10": "1.0.10",
     "jsr:@std/path@^1.1.1": "1.1.2",
+    "jsr:@std/testing@*": "1.0.15",
     "jsr:@std/testing@^1.0.15": "1.0.15",
     "jsr:@supabase/functions-js@*": "2.4.5",
     "npm:@supabase/supabase-js@2": "2.54.0",
