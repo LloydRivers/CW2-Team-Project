@@ -1,9 +1,9 @@
-import { stub, assertSpyCall, assertSpyCalls } from "@std/testing/mock";
-import 'jsr:@std/dotenv/load'
-import request from "npm:supertest"
-import router from "../seasons/index.ts"
-import season from "./mockResponses/season.json" with { type: "json" };
-import error from "./mockResponses/error.json" with { type: "json" };
+import { assertSpyCall, assertSpyCalls, stub } from "@std/testing/mock";
+import 'jsr:@std/dotenv/load';
+import request from "npm:supertest";
+import router from "../../seasons/index.ts";
+import error from "../mockResponses/error.json" with { type: "json" };
+import season from "../mockResponses/season.json" with { type: "json" };
 
 function mockFetch (response) {
   const mockedFetch = stub( globalThis, "fetch", () => ( Promise.resolve( 

@@ -2,9 +2,9 @@ import { stub, assertSpyCall } from "@std/testing/mock";
 import { assertEquals, assertExists, assertInstanceOf } from 'jsr:@std/assert@1'
 import 'jsr:@std/dotenv/load'
 import request from "npm:supertest"
-import router from "../teams/index.ts"
-import teams from "./mockResponses/teams.json" with { type: "json" };
-import team from "./mockResponses/team.json" with { type: "json" };
+import router from "../../teams/index.ts"
+import teams from "../mockResponses/teams.json" with { type: "json" };
+import team from "../mockResponses/team.json" with { type: "json" };
 
 function mockFetch (response) {
   const mockedFetch = stub( globalThis, "fetch", () => ( Promise.resolve( 
