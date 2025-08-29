@@ -1,0 +1,91 @@
+{
+    "api": "https://f1api.dev",
+    "url": "https://f1api.dev/api/current/last",
+    "total": 1,
+    "season": 2025,
+    "round": 14,
+    "championship": {
+        "championshipId": "f1_2025",
+        "championshipName": "2025 Formula 1 World Championship",
+        "url": "https://en.wikipedia.org/wiki/2025_Formula_One_World_Championship",
+        "year": 2025
+    },
+    "race": [
+        {
+            "raceId": "hungarian_2025",
+            "championshipId": "f1_2025",
+            "raceName": "Lenovo Hungarian Grand Prix 2025",
+            "schedule": {
+                "race": {
+                    "date": null,
+                    "time": null
+                },
+                "qualy": {
+                    "date": null,
+                    "time": null
+                },
+                "fp1": {
+                    "date": null,
+                    "time": null
+                },
+                "fp2": {
+                    "date": null,
+                    "time": null
+                },
+                "fp3": {
+                    "date": null,
+                    "time": null
+                },
+                "sprintQualy": {
+                    "date": null,
+                    "time": null
+                },
+                "sprintRace": {
+                    "date": null,
+                    "time": null
+                }
+            },
+            "laps": 70,
+            "round": 14,
+            "url": "https://en.wikipedia.org/wiki/2025_Hungarian_Grand_Prix",
+            "fast_lap": {
+                "fast_lap": "1:19.409",
+                "fast_lap_driver_id": "russell",
+                "fast_lap_team_id": "mercedes"
+            },
+            "circuit": {
+                "circuitId": "hungaroring",
+                "circuitName": "Hungaroring",
+                "country": "Hungary",
+                "city": "Mogyorod",
+                "circuitLength": "4381km",
+                "lapRecord": "1:16:627",
+                "firstParticipationYear": 1986,
+                "corners": 14,
+                "fastestLapDriverId": "hamilton",
+                "fastestLapTeamId": "mercedes",
+                "fastestLapYear": 2020,
+                "url": "https://en.wikipedia.org/wiki/Hungaroring"
+            },
+            "winner": {
+                "driverId": "norris",
+                "name": "Lando",
+                "surname": "Norris",
+                "country": "Great Britain",
+                "birthday": "13/11/1999",
+                "number": 4,
+                "shortName": "NOR",
+                "url": "https://en.wikipedia.org/wiki/Lando_Norris"
+            },
+            "teamWinner": {
+                "teamId": "mclaren",
+                "teamName": "McLaren Formula 1 Team",
+                "country": "Great Britain",
+                "firstAppearance": 1966,
+                "constructorsChampionships": 9,
+                "driversChampionships": 12,
+                "url": "https://en.wikipedia.org/wiki/McLaren"
+            }
+        }
+    ]
+}
