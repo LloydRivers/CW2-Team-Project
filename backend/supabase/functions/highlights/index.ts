@@ -14,15 +14,14 @@ router.get('/highlights', async (request, response) => {
     const result = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UC3kxJQ9RfaS5CKeYbbFMi4Q&maxResults=1&&q=Highlights&type=video&key=${YT_API_KEY}`)
     const data = await result.json()
 
-    const videoId = data.items[0].id.videoId
-
-    if (!videoId) {
+    if (!data?.items || !data.items.length || !data.items[0]?.id?.videoId) {
       response.status(404).send({'message': 'Could not get a highlights video'})
+      return
     }
-    response.send({'embedUrl': `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`})
+    response.send({'embedUrl': `https://www.youtube.com/embed/${data.items[0].id.videoId}?autoplay=1&mute=1`})
   } catch (error) {
     response.status(500).send(error)
   }
 });
 
-router.listen(3000, () => {})
+export default router.listen(3000, () => {})
