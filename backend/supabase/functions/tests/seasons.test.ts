@@ -39,7 +39,7 @@ Deno.test('Sends 400 if invalid year is used', async () => {
     await request(router)
     .get("/seasons/test")
     .expect(400)
-    .expect('Invalid year')
+    .expect({'message': 'Invalid year'})
 
     assertSpyCalls(mockedFetch, 0)
   } finally {
@@ -54,7 +54,7 @@ Deno.test('Sends the recieved error message if data is not found for the given y
     await request(router)
     .get("/seasons/2025")
     .expect(error.status)
-    .expect(error.message)
+    .expect({'message': error.message})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/2025']

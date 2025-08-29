@@ -40,7 +40,7 @@ Deno.test('Sends 404 if no teams found', async () => {
     await request(router)
     .get("/teams")
     .expect(404)
-    .expect('No teams found')
+    .expect({'message': 'No teams found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/teams']
@@ -74,7 +74,7 @@ Deno.test('Sends 404 if no team found for given ID', async () => {
     await request(router)
     .get("/teams/id/test")
     .expect(404)
-    .expect('No team found for given ID')
+    .expect({'message': 'No team found for given ID'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/teams/test']
@@ -109,7 +109,7 @@ Deno.test('Sends 404 if no current teams found', async () => {
     await request(router)
     .get("/teams/featured")
     .expect(404)
-    .expect('No current teams found')
+    .expect({'message': 'No current teams found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/current/teams']
@@ -143,7 +143,7 @@ Deno.test('Sends 404 if no current teams found', async () => {
     await request(router)
     .get("/teams/current")
     .expect(404)
-    .expect('No current teams found')
+    .expect({'message': 'No current teams found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/current/teams']

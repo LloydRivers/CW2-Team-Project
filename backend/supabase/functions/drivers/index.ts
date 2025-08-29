@@ -20,7 +20,7 @@ router.get('/drivers', async (request, response) => {
     const { drivers } = await result.json()
 
     if (drivers === undefined || drivers.length < 1) {
-      response.status(404).send('No drivers found')
+      response.status(404).send({'message': 'No drivers found'})
       return
     }
 
@@ -36,7 +36,7 @@ router.get('/drivers/featured', async (request, response) => {
     const { drivers } = await result.json()
 
     if (drivers === undefined || drivers.length < 1) {
-      response.status(404).send('No current drivers found')
+      response.status(404).send({'message': 'No current drivers found'})
       return
     }
 
@@ -53,7 +53,7 @@ router.get('/drivers/current', async (request, response) => {
     const { drivers } = await result.json()
 
     if (drivers === undefined || drivers.length < 1) {
-        response.status(404).send('No current drivers found')
+        response.status(404).send({'message': 'No current drivers found'})
         return
     }
     response.status(200).send(drivers)
@@ -69,7 +69,7 @@ router.get('/drivers/id/:id', async (request, response) => {
       const { driver } = await result.json()
 
       if (!driver) {
-          response.status(404).send('Driver not found')
+          response.status(404).send({'message': 'Driver not found'})
           return
       }
       response.status(200).send(driver)

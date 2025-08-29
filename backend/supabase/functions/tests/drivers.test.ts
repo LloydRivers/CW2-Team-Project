@@ -74,7 +74,7 @@ Deno.test('Sends 404 if no drivers found', async () => {
     await request(router)
     .get("/drivers")
     .expect(404)
-    .expect('No drivers found')
+    .expect({'message': 'No drivers found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/drivers']
@@ -109,7 +109,7 @@ Deno.test('Sends 404 if no current drivers found', async () => {
     await request(router)
     .get("/drivers/featured")
     .expect(404)
-    .expect('No current drivers found')
+    .expect({'message': 'No current drivers found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/current/drivers']
@@ -143,7 +143,7 @@ Deno.test('Sends 404 if no current drivers found', async () => {
     await request(router)
     .get("/drivers/current")
     .expect(404)
-    .expect('No current drivers found')
+    .expect({'message': 'No current drivers found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/current/drivers']
@@ -177,7 +177,7 @@ Deno.test('Sends 404 if no driver found for given ID', async () => {
     await request(router)
     .get("/drivers/id/test")
     .expect(404)
-    .expect('Driver not found')
+    .expect({'message': 'Driver not found'})
 
     assertSpyCall(mockedFetch, 0, {
       args: ['https://f1connectapi.vercel.app/api/drivers/test']
