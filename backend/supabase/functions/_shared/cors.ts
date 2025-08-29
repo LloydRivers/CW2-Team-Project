@@ -3,7 +3,7 @@ export async function corsHeaders (request,response,next) {
     response.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type')
    
     if (request.method === 'OPTIONS') { 
-        response.status(200).send('ok', { headers: corsHeaders })  
+        response.status(200).send({ headers: corsHeaders })  
         return
     }  
 

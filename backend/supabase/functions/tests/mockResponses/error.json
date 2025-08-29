@@ -1,0 +1,6 @@
+{
+    "api": "https://f1api.dev",
+    "url": "https://f1api.dev/api/2026",
+    "message": "No seasons found for this year, try with another one.",
+    "status": 404
+}

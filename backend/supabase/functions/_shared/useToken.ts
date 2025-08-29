@@ -3,7 +3,7 @@ import {createClient} from "npm:@supabase/supabase-js@2";
 export function useToken (request,response,next) {
 	const bearer = request.header("Authorization")
 	if (!bearer) {
-		response.status(401).send("Missing Authorization header")
+		response.status(401).send({'message': "Missing Authorization header"})
 		return
 	}
 

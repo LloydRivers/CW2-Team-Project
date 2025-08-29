@@ -22,7 +22,7 @@ router.get('/profiles', async (request, response) => {
         }
 
         if (!result.data){
-            response.status(404).send("Profile not found")
+            response.status(404).send({'message': "Profile not found"})
             return
         }
 
@@ -36,7 +36,7 @@ router.put('/profiles', async (request, response) => {
     try {
         const data = request.body
         if (!data || (!data.favourite_driver && !data.favourite_team)) {
-            response.status(400).send("Bad request body")
+            response.status(400).send({'message': "Bad request body"})
             return
         } 
         let updatedData: {user_id, favourite_driver?, favourite_team?} = {

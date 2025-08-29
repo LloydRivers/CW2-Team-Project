@@ -1,0 +1,279 @@
+{
+    "api": "https://f1api.dev",
+    "url": "https://f1api.dev/api/teams",
+    "limit": 30,
+    "offset": 0,
+    "total": 30,
+    "teams": [
+        {
+            "teamId": "adams",
+            "teamName": "Adams",
+            "teamNationality": "American",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Adams_(constructor)"
+        },
+        {
+            "teamId": "afm",
+            "teamName": "AFM",
+            "teamNationality": "German",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Alex_von_Falkenhausen_Motorenbau"
+        },
+        {
+            "teamId": "ags",
+            "teamName": "AGS",
+            "teamNationality": "French",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Automobiles_Gonfaronnaises_Sportives"
+        },
+        {
+            "teamId": "alfa",
+            "teamName": "Alfa Romeo",
+            "teamNationality": "Swiss",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Alfa_Romeo_in_Formula_One"
+        },
+        {
+            "teamId": "alphatauri",
+            "teamName": "AlphaTauri",
+            "teamNationality": "Italian",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Scuderia_AlphaTauri"
+        },
+        {
+            "teamId": "alpine",
+            "teamName": "Alpine F1 Team",
+            "teamNationality": "France",
+            "firstAppeareance": 2021,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "https://en.wikipedia.org/wiki/Alpine_F1_Team"
+        },
+        {
+            "teamId": "alta",
+            "teamName": "Alta",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Alta_auto_racing_team"
+        },
+        {
+            "teamId": "amon",
+            "teamName": "Amon",
+            "teamNationality": "New Zealander",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Amon_(Formula_One_team)"
+        },
+        {
+            "teamId": "apollon",
+            "teamName": "Apollon",
+            "teamNationality": "Swiss",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Apollon_(Formula_One)"
+        },
+        {
+            "teamId": "arrows",
+            "teamName": "Arrows",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Arrows_Grand_Prix_International"
+        },
+        {
+            "teamId": "arzani-volpini",
+            "teamName": "Arzani-Volpini",
+            "teamNationality": "Italian",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Arzani-Volpini"
+        },
+        {
+            "teamId": "aston_martin",
+            "teamName": "Aston Martin F1 Team",
+            "teamNationality": "Great Britain",
+            "firstAppeareance": 1959,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "https://en.wikipedia.org/wiki/Aston_Martin_in_Formula_One"
+        },
+        {
+            "teamId": "ats",
+            "teamName": "ATS",
+            "teamNationality": "Italian",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/ATS_(wheels)"
+        },
+        {
+            "teamId": "bar",
+            "teamName": "BAR",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/British_American_Racing"
+        },
+        {
+            "teamId": "behra-porsche",
+            "teamName": "Behra-Porsche",
+            "teamNationality": "Italian",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Behra-Porsche"
+        },
+        {
+            "teamId": "bellasi",
+            "teamName": "Bellasi",
+            "teamNationality": "Swiss",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Bellasi"
+        },
+        {
+            "teamId": "benetton",
+            "teamName": "Benetton",
+            "teamNationality": "Italian",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Benetton_Formula"
+        },
+        {
+            "teamId": "bmw",
+            "teamName": "BMW",
+            "teamNationality": "German",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/BMW"
+        },
+        {
+            "teamId": "bmw_sauber",
+            "teamName": "BMW Sauber",
+            "teamNationality": "German",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/BMW_Sauber"
+        },
+        {
+            "teamId": "boro",
+            "teamName": "Boro",
+            "teamNationality": "Dutch",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Boro_(Formula_One)"
+        },
+        {
+            "teamId": "brabham",
+            "teamName": "Brabham",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brabham-alfa_romeo",
+            "teamName": "Brabham-Alfa Romeo",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brabham-brm",
+            "teamName": "Brabham-BRM",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brabham-climax",
+            "teamName": "Brabham-Climax",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brabham-ford",
+            "teamName": "Brabham-Ford",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brabham-repco",
+            "teamName": "Brabham-Repco",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brabham"
+        },
+        {
+            "teamId": "brawn",
+            "teamName": "Brawn",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Brawn_GP"
+        },
+        {
+            "teamId": "brm",
+            "teamName": "BRM",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/BRM"
+        },
+        {
+            "teamId": "brm-ford",
+            "teamName": "BRM-Ford",
+            "teamNationality": "British",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/BRM"
+        },
+        {
+            "teamId": "bromme",
+            "teamName": "Bromme",
+            "teamNationality": "American",
+            "firstAppeareance": null,
+            "constructorsChampionships": null,
+            "driversChampionships": null,
+            "url": "http://en.wikipedia.org/wiki/Bromme"
+        }
+    ]
+}

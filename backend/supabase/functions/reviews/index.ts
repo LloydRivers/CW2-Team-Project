@@ -20,7 +20,7 @@ router.get('/reviews/races', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No reviews found')
+			response.status(404).send({'message': 'No reviews found'})
 			return
 		}
 
@@ -41,7 +41,7 @@ router.get('/reviews/races/:raceId', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No reviews found for given race')
+			response.status(404).send({'message': 'No reviews found for given race'})
 			return
 		}
 
@@ -56,7 +56,7 @@ router.put('/reviews/races/:raceId', authorisation, async (request, response) =>
         const race_id = request.params.raceId
       	const {review} = request.body
    		if (!review) {
-			response.status(400).send("Invalid request body")
+			response.status(400).send({'message': "Invalid request body"})
 			return
 		}
 
