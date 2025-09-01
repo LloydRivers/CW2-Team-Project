@@ -14,19 +14,15 @@ export interface Team {
 
 export interface FeaturedTeam extends Team {}
 
-export interface Highlight {
-  title?: string;
-  category?: string;
-  date?: string;
-  description?: string;
-  video_url?: string;
-}
+export type Highlights = {
+  embedUrl: string;
+};
 
 export interface AppData {
   drivers: Driver[];
   featuredDrivers: FeaturedDriver | null;
   featuredTeams: FeaturedTeam | null;
-  highlights: Highlight | null;
+  highlights: Highlights | null;
   teams: Team[];
   seasons: SeasonData | null;
   sessions: SessionData | null;

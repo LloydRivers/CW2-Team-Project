@@ -1,8 +1,8 @@
 import { apiCall } from "../api/api";
 import { appData } from "../data/appData";
-import type { Highlight } from "../types/index";
 import { renderHighlights } from "../ui/renders/highlights";
 import { showError, showLoading } from "../ui/utils";
+import type { Highlights } from "../types/types";
 
 // Load highlights data
 export async function loadHighlights(): Promise<void> {
@@ -10,7 +10,7 @@ export async function loadHighlights(): Promise<void> {
 
   try {
     const highlightsData = await apiCall<Highlight[]>("/highlights");
-    appData.highlights = highlightsData;
+    console.log("Fetched highlights data:", highlightsData);
     renderHighlights(highlightsData);
   } catch (error) {
     showError("highlights-content", "Failed to load highlights data");

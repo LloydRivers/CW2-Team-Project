@@ -11,8 +11,6 @@ export function renderSeasons(seasonData: SeasonData): void {
     return;
   }
 
-  console.log("Rendering season:", seasonData);
-
   let html = `
     <div class="card">
         <h3>🏁 ${seasonData.championship.championshipName} (${seasonData.championship.year})</h3>

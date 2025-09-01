@@ -55,28 +55,6 @@ app.get("/api/sessions/latest", async (req, res) => {
       .json({ error: "Failed to fetch latest sessions from Supabase" });
   }
 });
-
-// Catch-all for any other endpoints
-app.get("/api/*", async (req, res) => {
-  try {
-    const endpoint = req.params[0];
-    const url = `${SUPABASE_BASE}/${endpoint}`;
-
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${AUTH_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    console.error("Proxy error (catch-all):", err);
-    res.status(500).json({ error: "Failed to fetch from Supabase" });
-  }
-});
-
 // POST route for login
 app.post("/api/login", async (req, res) => {
   try {
@@ -109,6 +87,50 @@ app.post("/api/login", async (req, res) => {
   } catch (err) {
     console.error("Proxy error (login):", err);
     res.status(500).json({ error: "Failed to login via Supabase" });
+  }
+});
+
+app.get("/api/highlights", async (req, res) => {
+  console.log("Fetching highlights data...");
+  try {
+    const url = `${SUPABASE_BASE}/highlights`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    console.log("Fetched highlights data:", data);
+
+    // Wrap single object in array
+    res.json(data);
+  } catch (err) {
+    console.error("Proxy error (highlights):", err);
+    res.status(500).json({ error: "Failed to fetch highlights" });
+  }
+});
+
+// Catch-all for any other endpoints
+app.get("/api/*", async (req, res) => {
+  try {
+    const endpoint = req.params[0];
+    const url = `${SUPABASE_BASE}/${endpoint}`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Proxy error (catch-all):", err);
+    res.status(500).json({ error: "Failed to fetch from Supabase" });
   }
 });
 

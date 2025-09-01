@@ -7,7 +7,12 @@ const API_CONFIG = {
 } as const;
 
 export async function apiCall<T = any>(endpoint: string): Promise<T> {
-  console.log(`API call initiated for ${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`API call initiated for ${API_CONFIG.baseUrl}${endpoint}`);
   try {
     const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`, {
       method: "GET",

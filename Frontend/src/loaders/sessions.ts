@@ -10,7 +10,6 @@ export async function loadSessions(): Promise<void> {
 
   try {
     const sessionsData = await apiCall<SessionData>("/sessions/latest");
-    console.log("Latest session data:", sessionsData);
     appData.sessions = sessionsData;
     renderSessions(sessionsData);
   } catch (error) {
