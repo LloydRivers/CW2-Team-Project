@@ -1,26 +1,38 @@
+import { lockApp } from "./auth/unlockApp";
 import { setupButtonListeners } from "./features/buttons/buttons";
 import { setupKeyboardShortcuts } from "./features/keyboard/keyboard";
-import { setupNavigation } from "./features/navigation/navigation";
 import { setupNetworkHandlers } from "./features/network/network";
 import { startAutoRefresh } from "./features/refresh/autoRefresh";
 import { setupDriverSearch } from "./features/searching/driver-searching";
 import { setupTeamSearch } from "./features/searching/team-searching";
 import { addVisualEffects } from "./features/visualEffects/visualEffects";
 import { loadDashboard } from "./loaders/dashboard-data";
+import { loadDrivers } from "./loaders/drivers";
+import { loadHighlights } from "./loaders/highlights";
+import { loadSeasons } from "./loaders/seasons";
+import { loadSessions } from "./loaders/sessions";
+import { loadTeams } from "./loaders/teams";
 
-export function startApp() {
+export async function startApp() {
   console.log("🏎️ F1 Hub initialized!");
   console.log("💡 Tip: Use Alt+1-6 for quick navigation, Alt+R to refresh");
 
+  // setupNavigation(); Currently unused pending me testing that nothing breaks.
   // Setup all event listeners
-  setupNavigation();
   setupButtonListeners();
   setupDriverSearch();
   setupTeamSearch();
   setupNetworkHandlers();
   setupKeyboardShortcuts();
   // Load initial dashboard data
-  loadDashboard();
+  await Promise.all([
+    loadDashboard(),
+    loadDrivers(),
+    loadTeams(),
+    loadSeasons(),
+    loadHighlights(),
+    loadSessions(),
+  ]);
 
   // Start auto-refresh
   startAutoRefresh();

@@ -12,10 +12,8 @@ export function setupTeamSearch(): void {
       const searchTerm = target.value.toLowerCase();
       const filteredTeams = appData.teams.filter(
         (team) =>
-          (team.name || "").toLowerCase().includes(searchTerm) ||
-          (team.team_name || "").toLowerCase().includes(searchTerm) ||
-          (team.base || "").toLowerCase().includes(searchTerm) ||
-          (team.headquarters || "").toLowerCase().includes(searchTerm)
+          (team.teamName || "").toLowerCase().includes(searchTerm) ||
+          (team.teamNationality || "").toLowerCase().includes(searchTerm)
       );
       renderTeams(filteredTeams);
     });

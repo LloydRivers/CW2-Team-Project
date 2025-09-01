@@ -14,11 +14,7 @@
         <div class="logo">🏎️ F1 HUB</div>
         <div class="nav-links">
           <a href="#" class="nav-link active" data-section="home">Home</a>
-          <a href="#" class="nav-link" data-section="drivers">Drivers</a>
-          <a href="#" class="nav-link" data-section="teams">Teams</a>
-          <a href="#" class="nav-link" data-section="seasons">Seasons</a>
-          <a href="#" class="nav-link" data-section="highlights">Highlights</a>
-          <a href="#" class="nav-link" data-section="sessions">Sessions</a>
+
           <a href="#" class="nav-link" id="login-btn">Login</a>
           <a href="#" class="nav-link" id="logout-btn" style="display: none"
             >Logout</a
@@ -46,77 +42,78 @@
           <!-- Featured content will be loaded here -->
         </div>
       </section>
+      <div id="protected-content">
+        <!-- Drivers Section -->
+        <section id="drivers" class="section">
+          <div class="hero">
+            <h2>Drivers Championship</h2>
+            <input
+              type="text"
+              class="search-bar"
+              placeholder="Search drivers..."
+              id="driver-search"
+            />
+          </div>
+          <div id="drivers-content" class="grid">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
 
-      <!-- Drivers Section -->
-      <section id="drivers" class="section">
-        <div class="hero">
-          <h2>Drivers Championship</h2>
-          <input
-            type="text"
-            class="search-bar"
-            placeholder="Search drivers..."
-            id="driver-search"
-          />
-        </div>
-        <div id="drivers-content" class="grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-      </section>
+        <!-- Teams Section -->
+        <section id="teams" class="section">
+          <div class="hero">
+            <h2>Constructor's Championship</h2>
+            <input
+              type="text"
+              class="search-bar"
+              placeholder="Search teams..."
+              id="team-search"
+            />
+          </div>
+          <div id="teams-content" class="grid">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
 
-      <!-- Teams Section -->
-      <section id="teams" class="section">
-        <div class="hero">
-          <h2>Constructor's Championship</h2>
-          <input
-            type="text"
-            class="search-bar"
-            placeholder="Search teams..."
-            id="team-search"
-          />
-        </div>
-        <div id="teams-content" class="grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-      </section>
+        <!-- Seasons Section -->
+        <section id="seasons" class="section">
+          <div class="hero">
+            <h2>2025 Season Overview</h2>
+            <button class="refresh-btn" id="load-seasons">
+              🏁 Load Season Data
+            </button>
+          </div>
+          <div id="seasons-content" class="grid">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
 
-      <!-- Seasons Section -->
-      <section id="seasons" class="section">
-        <div class="hero">
-          <h2>2025 Season Overview</h2>
-          <button class="refresh-btn" id="load-seasons">
-            🏁 Load Season Data
-          </button>
-        </div>
-        <div id="seasons-content" class="grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-      </section>
+        <!-- Highlights Section -->
+        <section id="highlights" class="section">
+          <div class="hero">
+            <h2>Race Highlights & News</h2>
+            <button class="refresh-btn" id="load-highlights">
+              📰 Refresh Highlights
+            </button>
+          </div>
+          <div id="highlights-content">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
 
-      <!-- Highlights Section -->
-      <section id="highlights" class="section">
-        <div class="hero">
-          <h2>Race Highlights & News</h2>
-          <button class="refresh-btn" id="load-highlights">
-            📰 Refresh Highlights
-          </button>
-        </div>
-        <div id="highlights-content">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-      </section>
-
-      <!-- Sessions Section -->
-      <section id="sessions" class="section">
-        <div class="hero">
-          <h2>Latest Session Data</h2>
-          <button class="refresh-btn" id="load-sessions">
-            ⏱️ Load Latest Session
-          </button>
-        </div>
-        <div id="sessions-content" class="grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-      </section>
+        <!-- Sessions Section -->
+        <section id="sessions" class="section">
+          <div class="hero">
+            <h2>Latest Session Data</h2>
+            <button class="refresh-btn" id="load-sessions">
+              ⏱️ Load Latest Session
+            </button>
+          </div>
+          <div id="sessions-content" class="grid">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </section>
+      </div>
     </div>
 
     <!-- Auth Modal -->

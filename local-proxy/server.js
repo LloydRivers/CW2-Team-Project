@@ -16,13 +16,6 @@ app.use(cors());
 app.get("/api/seasons/:year", async (req, res) => {
   try {
     const year = req.params.year;
-    console.log("________");
-    console.log("________");
-    console.log("________");
-    console.log(year);
-    console.log("________");
-    console.log("________");
-    console.log("________");
     const url = `${SUPABASE_BASE}/seasons/${year}`;
     console.log("Proxying request to:", url);
 
@@ -81,6 +74,41 @@ app.get("/api/*", async (req, res) => {
   } catch (err) {
     console.error("Proxy error (catch-all):", err);
     res.status(500).json({ error: "Failed to fetch from Supabase" });
+  }
+});
+
+// POST route for login
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const url = `${SUPABASE_BASE}/login`;
+    console.log("Proxying login request to:", url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    // return Supabase response to frontend
+    res.json(data);
+  } catch (err) {
+    console.error("Proxy error (login):", err);
+    res.status(500).json({ error: "Failed to login via Supabase" });
   }
 });
 

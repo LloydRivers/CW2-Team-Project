@@ -9,9 +9,15 @@ import { loadTeams } from "./loaders/teams";
 import type { AppData } from "./types/types";
 
 import { startApp } from "./app";
+import { initAuthUI } from "./auth/authUI";
 
 // Initialize the app
-document.addEventListener("DOMContentLoaded", startApp);
+document.addEventListener("DOMContentLoaded", async () => {
+  startApp();
+});
+document.addEventListener("DOMContentLoaded", () => {
+  initAuthUI();
+});
 
 // Export functions for global access
 declare global {
