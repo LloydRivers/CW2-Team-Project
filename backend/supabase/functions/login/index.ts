@@ -1,10 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import express from 'npm:express'
 import {createClient} from "npm:@supabase/supabase-js@2";
+import { corsHeaders } from '../_shared/cors.ts'
 
 const router = express();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(corsHeaders)
 
 const supabase = createClient(Deno.env.get("SUPABASE_URL"), Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"))
 
