@@ -15,7 +15,7 @@ router.get('/sessions/latest', async (request, response) => {
     const { race: round } = await result.json()
 
     if (!round) {
-      response.status(404).send('Cannot find most recent round')
+      response.status(404).send({'message': 'Cannot find most recent round'})
       return 
     }
     
@@ -23,7 +23,7 @@ router.get('/sessions/latest', async (request, response) => {
     sessions = sessions.filter(session => session[1].date !== null)
 
     if (sessions.length < 1) {
-      response.status(404).send('No recent sessions found')
+      response.status(404).send({'message': 'No recent sessions found'})
       return
     }
 
@@ -37,7 +37,7 @@ router.get('/sessions/latest', async (request, response) => {
     const { races: session } = await sessionResult.json()
 
     if (!session) {
-      response.status(404).send('Could not get data for latest session')
+      response.status(404).send({'messsage': 'Could not get data for latest session'})
       return
     }
 
@@ -47,4 +47,4 @@ router.get('/sessions/latest', async (request, response) => {
   }
 });
 
-router.listen(3000, () => {})
+export default router.listen(3000, () => {})

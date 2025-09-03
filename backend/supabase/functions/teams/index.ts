@@ -15,7 +15,7 @@ router.get('/teams', async (request, response) => {
     const { teams } = await result.json()
 
     if (teams === undefined || teams.length < 1) {
-      response.status(404).send('No teams found')
+      response.status(404).send({'message': 'No teams found'})
       return
     }
     response.status(200).send(teams)
@@ -31,7 +31,7 @@ router.get('/teams/id/:id', async (request, response) => {
       const { team } = await result.json()
 
       if (!team) {
-          response.status(404).send("No team found for given ID")
+          response.status(404).send({'message': "No team found for given ID"})
           return
       }
       response.status(200).send(team)
@@ -46,7 +46,7 @@ router.get('/teams/featured', async (request, response) => {
     const { teams } = await result.json()
 
     if (teams === undefined || teams.length < 1) {
-      response.status(404).send('No current teams found')
+      response.status(404).send({'message': 'No current teams found'})
       return
     }
 
@@ -63,7 +63,7 @@ router.get('/teams/current', async (request, response) => {
     const { teams } = await result.json()
 
     if (teams === undefined || teams.length < 1) {
-        response.status(404).send('No current teams found')
+        response.status(404).send({'message': 'No current teams found'})
         return
     }
     response.status(200).send(teams)
@@ -72,4 +72,4 @@ router.get('/teams/current', async (request, response) => {
   }
 });
 
-router.listen(3000, () => {})
+export default router.listen(3000, () => {})

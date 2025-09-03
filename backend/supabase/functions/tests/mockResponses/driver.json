@@ -1,0 +1,17 @@
+{
+    "api": "https://f1api.dev",
+    "url": "https://f1api.dev/api/drivers/Cannoc",
+    "total": 1,
+    "driver": [
+        {
+            "driverId": "Cannoc",
+            "name": "John",
+            "surname": "Cannon",
+            "nationality": "Canadian",
+            "birthday": "1933-06-21",
+            "number": null,
+            "shortName": null,
+            "url": "http://en.wikipedia.org/wiki/John_Cannon_(auto_racer)"
+        }
+    ]
+}

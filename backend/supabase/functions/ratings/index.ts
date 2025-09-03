@@ -20,7 +20,7 @@ router.get('/ratings/races', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No ratings found')
+			response.status(404).send({'message': 'No ratings found'})
 			return
 		}
 
@@ -41,7 +41,7 @@ router.get('/ratings/races/:raceId', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No ratings found for given race')
+			response.status(404).send({'message': 'No ratings found for given race'})
 			return
 		}
 
@@ -56,7 +56,7 @@ router.put('/ratings/races/:raceId', authorisation, async (request, response) =>
         const race_id = request.params.raceId
       	const {rating} = request.body
    		if (!rating || isNaN(rating)) {
-			response.status(400).send("Invalid rating")
+			response.status(400).send({'message': "Invalid rating"})
 			return
 		}
 
@@ -98,7 +98,7 @@ router.get('/ratings/drivers', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No ratings found')
+			response.status(404).send({'message': 'No ratings found'})
 			return
 		}
 
@@ -119,7 +119,7 @@ router.get('/ratings/drivers/:driverId', async (request, response) => {
         }
 
 		if (result.data.length < 1) {
-			response.status(404).send('No ratings found')
+			response.status(404).send({'message': 'No ratings found'})
 			return
 		}
 
@@ -136,7 +136,7 @@ router.put('/ratings/races/:raceId/drivers/:driverId', authorisation, async (req
 
       	const {rating} = request.body
    		if (!rating || isNaN(rating)) {
-			response.status(400).send("Invalid rating")
+			response.status(400).send({'message': "Invalid rating"})
 			return
 		}
 
