@@ -53,9 +53,6 @@ app.get("/api/drivers", async (req, res) => {
 
 app.get("/api/teams", async (req, res) => {
   try {
-    const limit = req.query.limit || 1;
-    const offset = req.query.offset || 0;
-    
     const url = `${F1_API_BASE}/current/teams`;
 
     const response = await fetch(url, {
