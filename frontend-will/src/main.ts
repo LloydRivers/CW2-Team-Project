@@ -7,6 +7,27 @@ import './style.css';
 const API_URL = 'http://localhost:3000/api';
 const app = document.getElementById('app')!;
 
+// Get the team and return the css class for its colour.
+function getTeamColourClass(teamId: string): string {
+  if (!teamId) return '';
+  
+  const teamLower = teamId.toLowerCase();
+
+  if (teamLower.includes('ferrari') || teamLower.includes('scuderia_ferrari')) return 'ferrariRed';
+  if (teamLower.includes('mclaren')) return 'mclarenOrange';
+  if (teamLower.includes('rb') || teamLower.includes('visa')) return 'visaBlue';
+  if (teamLower.includes('haas')) return 'haasGray';
+  if (teamLower.includes('sauber')) return 'kickGreen';
+  if (teamLower.includes('red_bull') || (teamLower.includes('red'))) return 'redbullBlue';
+  if (teamLower.includes('alpine')) return 'alpineBlue';
+  if (teamLower.includes('mercedes')) return 'mercedesGreen';
+  if (teamLower.includes('williams')) return 'williamsBlue';
+  if (teamLower.includes('aston_martin') || (teamLower.includes('aston'))) return 'astonmartinGreen';
+  
+  // Default, no colour
+  return ''; 
+}
+
 async function startApp() {
   // Check if user already has a session
   let userSession = getSavedSession();
@@ -61,7 +82,7 @@ function renderLoginScreen() {
   app.innerHTML = `
     <div class="min-h-screen flex py-12 px-4 items-center justify-center bg-gray-50 sm:px-6 lg:px-8">
       <div class="space-y-8 w-full max-w-md">
-        <div>
+        <div class="fadeinTransition">
           <h2 class="mt-6 font-extrabold text-center text-3xl text-gray-900">
             F1 Insights
           </h2>
@@ -239,7 +260,7 @@ function renderDashboard(user) {
   // Build the main app interface
   app.innerHTML = `
     <div class="min-h-screen bg-gray-50">
-      <nav class="shadow bg-white">
+      <nav class="shadow bg-white fadeinTransition">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div class="flex h-16 justify-between">
             <div class="flex items-center space-x-8">
@@ -272,7 +293,7 @@ function renderDashboard(user) {
     </div>
   `;
 
-  // Wire up navigation and logout functionality
+  // Not working sometimes, think its a safari thing.
   document.getElementById('logoutButton')?.addEventListener('click', handleLogout);
   
   document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -332,7 +353,7 @@ async function loadSection(section) {
 async function renderFeaturedDriverSection(container) {
   // Set up the basic structure with a featured driver and searchable grid
   container.innerHTML = `
-    <div class="space-y-6">
+    <div class="renderedSection">
       <div class="items-center flex justify-between">
         <h2 class="font-bold text-2xl text-gray-900">🏎️ Featured Driver</h2>
         <button id="refreshDriverButton" class="text-white bg-indigo-600 rounded-md py-2 px-4 hover:bg-indigo-700">
@@ -364,6 +385,7 @@ async function renderFeaturedDriverSection(container) {
   await loadFeaturedDriver(currentOffset);
 
   // Add event listener for refresh button, which picks a random driver to feature.
+  // REMEMBER: Fix this.
   document.getElementById('refreshDriverButton')?.addEventListener('click', async () => {
     currentOffset = Math.floor(Math.random() * 100); // Pick random driver for the featured card.
     await loadFeaturedDriver(currentOffset);
@@ -400,6 +422,7 @@ async function loadFeaturedDriver(offset = 20) {
     // Render the driver card, with basic info, wikipedia link, team and their number.
     card.innerHTML = `
       <div class="bg-white rounded-lg shadow-lg p-8">
+      <a href="${driver.url || '#'}" target="_blank">
         <div class="flex items-center space-x-6">
           <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center">
             <span class="text-indigo-600 font-bold text-2xl">${driver.number || '?'}</span>
@@ -408,10 +431,11 @@ async function loadFeaturedDriver(offset = 20) {
             <h3 class="text-2xl font-bold text-gray-900">${driver.name} ${driver.surname}</h3>
             <p class="text-lg text-gray-600">${driver.nationality}</p>
             <p class="text-gray-500">Born: ${driver.birthday}</p>
-            <p class="text-gray-500">Team: ${driver.teamId}</p>
+            <p class="text-gray-500">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
             ${driver.url ? `<a href="${driver.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm">Wikipedia →</a>` : ''}
           </div>
         </div>
+        </a>
       </div>
     `;
 
@@ -419,7 +443,7 @@ async function loadFeaturedDriver(offset = 20) {
     console.error('Unable to load featured driver:', error);
     let card = document.getElementById('featuredDriverCard');
     if (card) {
-      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, no driver data found.</div>';
+      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no driver data found.</div>';
     }
   }
 }
@@ -453,6 +477,7 @@ async function loadAllDrivers(searchQuery = '') {
     // Render the driver card, with basic info, wikipedia link, team and their number.
     grid.innerHTML = drivers.map(driver => `
       <div class="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+      <a href="${driver.url || '#'}" target="_blank">
         <div class="flex items-center space-x-4">
           <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
             <span class="text-indigo-600 font-bold">${driver.number || '?'}</span>
@@ -461,9 +486,10 @@ async function loadAllDrivers(searchQuery = '') {
             <h3 class="text-lg font-semibold text-gray-900">${driver.name} ${driver.surname}</h3>
             <p class="text-gray-600">${driver.nationality}</p>
             <p class="text-gray-500 text-sm">Born: ${driver.birthday}</p>
-            <p class="text-gray-500 text-sm">Team: ${driver.teamId}</p>
+            <p class="text-gray-500 text-sm">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
           </div>
         </div>
+        </a>
       </div>
     `).join('');
 
@@ -471,7 +497,7 @@ async function loadAllDrivers(searchQuery = '') {
     console.error('Unable to load drivers list:', error);
     let grid = document.getElementById('driversGrid');
     if (grid) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occured, no drivers found.</div>';
+      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occurred, no drivers found.</div>';
     }
   }
 }
@@ -480,7 +506,7 @@ async function loadAllDrivers(searchQuery = '') {
 async function renderFeaturedTeamSection(container) {
   // Basic layout with featured team and all teams grid
   container.innerHTML = `
-    <div class="space-y-6">
+    <div class="renderedSection">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-gray-900">🏁 Featured Team</h2>
         <button id="refreshTeamBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
@@ -527,25 +553,27 @@ async function loadFeaturedTeam(offset = 0) {
     if (!card) return;
 
     if (!resp.ok || !team) {
-      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, no featured team found.</div>';
+      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no featured team found.</div>';
       return;
     }
 
     // Render the team card with basic info and wikipedia link
     card.innerHTML = `
       <div class="bg-white rounded-lg shadow-lg p-8">
+      <a href="${team.url || '#'}" target="_blank">
         <div class="flex items-center space-x-6">
           <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
             <span class="text-red-600 font-bold text-lg">🏁</span>
           </div>
           <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900">${team.teamName}</h3>
+            <h3 class="text-2xl font-bold"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
             <p class="text-lg text-gray-600">${team.teamNationality}</p>
             <p class="text-gray-500">Championships: ${team.constructorsChampionships || 0}</p>
             <p class="text-gray-500">First appeared: ${team.firstAppeareance || 'Unknown'}</p>
             ${team.url ? `<a href="${team.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm">View Wikipedia →</a>` : ''}
           </div>
         </div>
+        </a>
       </div>
     `;
 
@@ -553,7 +581,7 @@ async function loadFeaturedTeam(offset = 0) {
     console.error('Unable to load featured team:', error);
     let card = document.getElementById('featuredTeamCard');
     if (card) {
-      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, no featured team found.</div>';
+      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no featured team found.</div>';
     }
   }
 }
@@ -571,23 +599,25 @@ async function loadAllTeams() {
     if (!grid) return;
 
     if (!resp.ok || teams.length === 0) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occured, no teams found.</div>';
+      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occurred, no teams found.</div>';
       return;
     }
 
     // Render each team card with basic info, and wikipedia link
     grid.innerHTML = teams.map(team => `
       <div class="rounded-lg shadow bg-white  p-6 hover:shadow-md transition-shadow">
+      <a href="${team.url || '#'}" target="_blank">
         <div class="flex items-center space-x-4">
           <div class="w-12 h-12  rounded-full flex bg-red-100 items-center justify-center">
             <span class="text-red-600 font-bold">🏁</span>
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-900">${team.teamName}</h3>
+            <h3 class="text-lg font-semibold"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
             <p class="text-gray-600">${team.teamNationality}</p>
             <p class="text-gray-500 text-sm">Championships: ${team.constructorsChampionships || 0}</p>
           </div>
         </div>
+        </a>
       </div>
     `).join('');
 
@@ -595,7 +625,7 @@ async function loadAllTeams() {
     console.error('Unable to load teams:', error);
     let grid = document.getElementById('teamsGrid');
     if (grid) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occured, no teams found.</div>';
+      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occurred, no teams found.</div>';
     }
   }
 }
@@ -604,7 +634,7 @@ async function loadAllTeams() {
 async function renderRaceWeekendSection(container) {
   // Basic layout
   container.innerHTML = `
-    <div class="space-y-6">
+    <div class="renderedSection">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-gray-900">🏆 Latest Race Weekend Data</h2>
         <button id="refreshRaceWeekendButton" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
@@ -735,7 +765,7 @@ async function loadRaceWeekendData() {
     console.error('Unable to load race weekend data:', error);
     let container = document.getElementById('raceWeekendData');
     if (container) {
-      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, no race data found.</div>';
+      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no race data found.</div>';
     }
   }
 }
@@ -744,7 +774,7 @@ async function loadRaceWeekendData() {
 async function renderHighlightsSection(container) {
   // Basic layout with featured highlight and season overview
   container.innerHTML = `
-    <div class="space-y-6">
+    <div class="renderedSection">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-gray-900">📺 Latest Highlights</h2>
         <button id="refreshHighlightsButton" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
@@ -770,7 +800,7 @@ async function renderHighlightsSection(container) {
     await loadHighlightsData();
   });
 
-  // Load all the highlights content
+  // Load all the highlights content (placeholder)
   await loadHighlightsData();
 }
 
@@ -795,7 +825,7 @@ async function loadSeasonData() {
     if (!container) return;
 
     if (!resp.ok || races.length === 0) {
-      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, no season data found.</div>';
+      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no season data found.</div>';
       return;
     }
 
@@ -823,7 +853,7 @@ async function loadSeasonData() {
     console.error('Unable to load season data:', error);
     let container = document.getElementById('seasonData');
     if (container) {
-      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occured, season data has not loaded.</div>';
+      container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, season data has not loaded.</div>';
     }
   }
 }

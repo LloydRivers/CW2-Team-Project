@@ -10,8 +10,6 @@ const SUPABASE_BASE = "https://kjyxxyagwqdqdgcnrlpk.supabase.co/functions/v1";
 const AUTH_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtqeXh4eWFnd3FkcWRnY25ybHBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjE5ODIsImV4cCI6MjA2OTYzNzk4Mn0.ZnDaE9s81RHnR7YKjmhaex8SeGjKXGfqlShwBnBrWw8";
 
-
-// Added console.log statements for debugging requests when an error occurs.
 // Added some endpoints as f1connectapi.vercel.app gave me CORS issues and was unreachable, auto-completed with AI so Mena or myself will need to rewrite this before submission.
 
 
@@ -21,12 +19,8 @@ app.use(cors());
 app.get("/api/drivers", async (req, res) => {
   try {
     const searchQuery = req.query.search;
-    const limit = req.query.limit || 1;
-    const offset = req.query.offset || 20;
     
     let url = `${F1_API_BASE}/current/drivers`;
-    
-    console.log("Fetching drivers from:", url);
 
     const response = await fetch(url, {
       headers: {
@@ -63,7 +57,6 @@ app.get("/api/teams", async (req, res) => {
     const offset = req.query.offset || 0;
     
     const url = `${F1_API_BASE}/current/teams`;
-    console.log("Fetching teams from:", url);
 
     const response = await fetch(url, {
       headers: {
@@ -81,8 +74,6 @@ app.get("/api/teams", async (req, res) => {
   } catch (err) {
     console.error("Error fetching teams:", err);
     res.status(500).json({ error: "Failed to fetch teams from F1 API" });
-
-    console.log("Request:", req.params, req.query);
   }
 });
 
@@ -90,7 +81,6 @@ app.get("/api/seasons/:year", async (req, res) => {
   try {
     const year = req.params.year;
     const url = `${F1_API_BASE}/${year}`;
-    console.log("Fetching season data from:", url);
 
     const response = await fetch(url, {
       headers: {
@@ -108,15 +98,12 @@ app.get("/api/seasons/:year", async (req, res) => {
   } catch (err) {
     console.error("Error fetching season data:", err);
     res.status(500).json({ error: "Failed to fetch season data from F1 API" });
-
-    console.log("Request:", req.params, req.query);
   }
 });
 
 app.get("/api/sessions/:year/:round/:session", async (req, res) => {
   try {
     const url = `${F1_API_BASE}/current/last`;
-    console.log("Fetching session data from:", url);
 
     const response = await fetch(url, {
       headers: {
@@ -137,8 +124,6 @@ app.get("/api/sessions/:year/:round/:session", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to fetch latest sessions from Supabase" });
-    
-      console.log("Request:", req.params, req.query);
     }
 });
 
@@ -152,7 +137,6 @@ app.post("/api/login", async (req, res) => {
     }
 
     const url = `${SUPABASE_BASE}/login`;
-    console.log("Proxying login request to:", url);
 
     const response = await fetch(url, {
       method: "POST",
@@ -185,7 +169,6 @@ app.post("/api/signup", async (req, res) => {
     }
 
     const url = `${SUPABASE_BASE}/signup`;
-    console.log("Proxying signup request to:", url);
 
     const response = await fetch(url, {
       method: "POST", 
