@@ -33,9 +33,9 @@ async function startApp() {
   let userSession = getSavedSession();
   
   // Decide what to show them
-  if (userSession && checkSessionValid(userSession)) {
+  if (userSession && checkValidSession(userSession)) {
     // They're logged in, show dashboard
-    renderDashboard(userSession.user);
+    renderDashboard(userSession.user || { email: 'Unknown User' });
   } else {
     // No valid session, clear any old stuff and show login
     wipeSessionData();
@@ -49,15 +49,17 @@ function getSavedSession() {
     try {
     const savedData = localStorage.getItem('cw2_f1_insights_session');
     return savedData ? JSON.parse(savedData) : null;
+
   } catch (error) {
-    // REMEMBER: remove this debug log before submission
-    console.log("Session data parsing error:", error);
+    
+    showMessage("Session data parsing error:", true);
+    
     return null;
   }
 }
 
 // Quick validation check for session object
-function checkSessionValid(session) {
+function checkValidSession(session: any) {
   // Basic sanity check
   if (!session) return false;
   
@@ -66,7 +68,7 @@ function checkSessionValid(session) {
 }
 
 // Store session data in browser storage
-function saveSessionData(data) {
+function saveSessionData(data: { token: any; user: { id: any; email: string; }; expiresAt: any; }) {
   // Store session in localStorage so it persists between page loads
   localStorage.setItem('cw2_f1_insights_session', JSON.stringify(data));
 }
@@ -78,57 +80,62 @@ function wipeSessionData() {
 
 // Show the login/signup form
 function renderLoginScreen() {
-  // Render login form with Tailwind css styling.
+// Render login form with Tailwind css styling.
   app.innerHTML = `
-    <div class="min-h-screen flex py-12 px-4 items-center justify-center bg-gray-50 sm:px-6 lg:px-8">
-      <div class="space-y-8 w-full max-w-md">
-        <div class="fadeinTransition">
-          <h2 class="mt-6 font-extrabold text-center text-3xl text-gray-900">
-            F1 Insights
-          </h2>
-          <p class="mt-2 text-center text-sm text-gray-600">
-            Sign in to access your Formula 1 data
-          </p>
+    <div class="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-zinc-50 flex items-center px-6 py-12">
+      <div class="w-full max-w-md mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          <div class="px-8 pt-8 pb-6">
+            <div class="text-center space-y-2 mb-8">
+              <h1 class="text-3xl font-bold tracking-tight text-gray-900">F1 Insights</h1>
+              <p class="text-gray-500 text-sm font-medium">Access exclusive Formula 1 data and analytics</p>
+            </div>
+            
+            <form id="authForm" class="space-y-5">
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700 block">Your Email</label>
+                <input 
+                  id="email" 
+                  type="email" 
+                  required 
+                  class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder:text-gray-400"
+                  placeholder="Enter your email address"
+                />
+              </div>
+              
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Password</label>
+                <input 
+                  id="password" 
+                  type="password" 
+                  required 
+                  class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder:text-gray-400"
+                  placeholder="Enter your password"
+                />
+              </div>
+              
+              <div id="errorMessage" class="hidden text-red-600 text-sm font-medium bg-red-50 rounded-lg p-3 border border-red-200"></div>
+              
+              <div class="pt-2 space-y-3">
+                <button 
+                  type="button" 
+                  id="signInButton" 
+                  class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:ring-4 focus:ring-blue-200"
+                >
+                  SignIn
+                </button>
+                
+                <button 
+                  type="button" 
+                  id="signUpButton" 
+                  class="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:scale-105 focus:ring-4 focus:ring-gray-200"
+                >
+                  Create New Account
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <form class="mt-8 space-y-6" id="authForm">
-          <div>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              placeholder="Email address"
-              class="appearance-none w-full px-3 py-2 border-gray-300 text-gray-900 rounded-md relative block focus:outline-none sm:text-sm focus:ring-indigo-500 placeholder-gray-500 focus:z-10 focus:border-indigo-500"
-            />
-          </div>
-          <div>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              placeholder="Password"
-              class="appearance-none w-full rounded-md px-3 py-2 border-gray-300 focus:outline-none relative block text-gray-900 focus:border-indigo-500 sm:text-sm placeholder-gray-500 focus:ring-indigo-500 focus:z-10"
-            />
-          </div>
-          <div id="errorMessage" class="hidden text-red-600 text-sm"></div>
-          <div class="flex space-x-4">
-            <button
-              type="button"
-              id="signInButton"
-              class="py-2 px-4 text-sm bg-indigo-600 text-white w-full rounded-md font-medium focus:outline-none hover:bg-indigo-700 justify-center flex relative focus:ring-2 group border-transparent focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              id="signUpButton"
-              class="py-2 px-4 text-sm bg-white text-gray-700 w-full rounded-md font-medium focus:outline-none hover:bg-gray-50 justify-center flex relative focus:ring-2 group border-gray-300 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   `;
@@ -171,22 +178,19 @@ async function doSignIn() {
     } else {
       // Login worked - save the session data
       let userData = {
-        token: result.token || result.access_token || result.jwt,
+        token: result.access_token,
         user: { 
-          id: result.user?.id || email,
-          email: email 
+          id: result.user?.id,
+          email: email
         },
-        expiresAt: result.expiresAt || result.expires_at
+        expiresAt: result.expires_at
       };
       
       saveSessionData(userData);
       renderDashboard(userData.user);
     }
   } catch (error) {
-    // REMEMBER: error messages need updating for submission
-    // Network or other error
     showMessage('Connection error - check network', true);
-    console.error('Login error:', error);
   }
 }
 
@@ -237,7 +241,7 @@ async function doSignUp() {
 }
 
 // Display message to user
-function showMessage(msg, isError = true) {
+function showMessage(msg: string | null, isError = true) {
   let msgBox = document.getElementById('errorMessage');
   if (!msgBox) return;
   
@@ -253,40 +257,49 @@ function showMessage(msg, isError = true) {
   msgBox.classList.remove('hidden');
 }
 
-// NOTE: remove debug stuff before final submission.
-// TODO: Add better navigation for different sections.
 // Render the main dashboard after successful login
-function renderDashboard(user) {
+function renderDashboard(user: { id?: any; email?: string; }) {
   // Build the main app interface
   app.innerHTML = `
-    <div class="min-h-screen bg-gray-50">
-      <nav class="shadow bg-white fadeinTransition">
-        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div class="flex h-16 justify-between">
-            <div class="flex items-center space-x-8">
-              <h1 class="text-xl font-semibold text-gray-900">F1 Insights</h1>
-              <div class="hidden md:flex space-x-4">
-                <button class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900" data-section="featured-driver">🏎️ Featured Driver</button>
-                <button class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900" data-section="featured-team">🏁 Featured Team</button>
-                <button class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900" data-section="race-weekend">🏆 Latest Race Weekend</button>
-                <button class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900" data-section="highlights">📺 Latest Highlights</button>
-              </div>
-            </div>
-            <div class="flex items-center space-x-4">
-              <span class="text-gray-700 text-sm">Hi, ${user.email}</span>
-              <button
-                id="logoutButton"
-                class="px-4 py-2 text-white bg-red-600 text-sm rounded-md font-medium hover:bg-red-700"
-              >
-                Log Out
+    <div style="min-height: 100vh; background-color: #f8f9fa;">
+      <header style="background-color: white; border-bottom: 2px solid #e9ecef; padding: 15px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="margin: 0; color: #333;">F1 Insights Dashboard</h1>
+            <div>
+              <span style="margin-right: 20px; color: #666;">Hello ${user.email || 'User'}</span>
+              <button id="logoutButton" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; cursor: pointer;">
+                Exit
               </button>
             </div>
           </div>
         </div>
+      </header>
+      
+      <nav style="background-color: #e9ecef; padding: 15px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <button class="nav-btn" data-section="featured-driver" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+              Current Drivers
+            </button>
+            <button class="nav-btn" data-section="all-drivers" style="padding: 10px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
+              All Drivers
+            </button>
+            <button class="nav-btn" data-section="featured-team" style="padding: 10px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
+              Teams
+            </button>
+            <button class="nav-btn" data-section="race-weekend" style="padding: 10px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
+              Race Data
+            </button>
+            <button class="nav-btn" data-section="highlights" style="padding: 10px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
+              Highlights
+            </button>
+          </div>
+        </div>
       </nav>
       
-      <main class="py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div id="content" class="px-4 py-6 sm:px-0">
+      <main style="max-width: 1200px; margin: 0 auto; padding: 30px 20px;">
+        <div id="content">
           <!-- Content loads here -->
         </div>
       </main>
@@ -299,9 +312,11 @@ function renderDashboard(user) {
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       // Clear active state from all buttons
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('border-b-2', 'border-indigo-500', 'text-indigo-600'));
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        (b as HTMLElement).style.backgroundColor = '#6c757d';
+      });
       // Set active state on clicked button
-      (e.target as HTMLElement).classList.add('border-b-2', 'border-indigo-500', 'text-indigo-600');
+      (e.target as HTMLElement).style.backgroundColor = '#007bff';
       
       let section = (e.target as HTMLElement).getAttribute('data-section');
       loadSection(section);
@@ -330,13 +345,16 @@ async function handleLogout() {
 }
 
 // Load different sections based on user navigation
-async function loadSection(section) {
+async function loadSection(section: string | null) {
   let content = document.getElementById('content');
   if (!content) return;
 
   switch(section) {
     case 'featured-driver':
       await renderFeaturedDriverSection(content);
+      break;
+    case 'all-drivers':
+      await renderAllDriversSection(content);
       break;
     case 'featured-team':
       await renderFeaturedTeamSection(content);
@@ -350,31 +368,71 @@ async function loadSection(section) {
   }
 }
 
-async function renderFeaturedDriverSection(container) {
-  // Set up the basic structure with a featured driver and searchable grid
+async function renderAllDriversSection(container: HTMLElement) {
+  // Set up the basic structure with a driver grid
   container.innerHTML = `
-    <div class="renderedSection">
-      <div class="items-center flex justify-between">
-        <h2 class="font-bold text-2xl text-gray-900">🏎️ Featured Driver</h2>
-        <button id="refreshDriverButton" class="text-white bg-indigo-600 rounded-md py-2 px-4 hover:bg-indigo-700">
-          Next Driver
-        </button>
-      </div>
-      <div id="featuredDriverCard" class="max-w-2xl">
-        <div class="py-8 text-center">Loading featured driver data...</div>
+    <div>
+      <h2 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px;">All Drivers Database</h2>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px; color: #333;">Search drivers:</label>
+        <input
+          type="text"
+          id="allDriverSearch"
+          placeholder="Type driver name..."
+          style="padding: 8px; border: 1px solid #ccc; width: 300px;"
+        />
       </div>
       
-      <div class="pt-6 border-t">
-        <h3 class="mb-4 font-semibold text-lg text-gray-900">All Drivers</h3>
+      <div id="allDriversGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <div style="text-align: center; padding: 20px; color: #666;">Loading drivers...</div>
+      </div>
+    </div>
+  `;
+
+  // Get the search input and add event listener for filtering the drivers grid
+  let searchInput = document.getElementById('allDriverSearch') as HTMLInputElement;
+  searchInput.addEventListener('input', (e) => {
+    let query = (e.target as HTMLInputElement).value;
+    loadAllDrivers(query);
+  });
+
+  // Also load the drivers grid, unfiltered at this point.
+  await loadAllDrivers();
+}
+
+
+async function renderFeaturedDriverSection(container: HTMLElement) {
+  // Set up the basic structure with a featured driver and searchable grid
+
+  // Show different driver not working, but its not essential to the project.
+  container.innerHTML = `
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Featured Driver</h2>
+        <button id="refreshDriverButton" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer;">
+          Show Different Driver
+        </button>
+      </div>
+      
+      <div id="featuredDriverCard" style="margin-bottom: 30px;">
+        <div style="text-align: center; padding: 20px; color: #666;">Loading featured driver...</div>
+      </div>
+      
+      <hr style="margin: 30px 0; border: 1px solid #ddd;" />
+      
+      <h3 style="margin-bottom: 15px; color: #333;">Current Season Drivers</h3>
+      <div style="margin-bottom: 20px;">
         <input 
           type="text" 
           id="driverSearch" 
-          placeholder="Search drivers by name..." 
-          class="mb-4 border w-64 rounded-md px-4 py-2"
+          placeholder="Search current drivers..." 
+          style="padding: 8px; border: 1px solid #ccc; width: 300px;"
         />
-        <div id="driversGrid" class="gap-6 grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1">
-          <div class="py-8 text-center">Getting driver list...</div>
-        </div>
+      </div>
+      
+      <div id="driversGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+        <div style="text-align: center; padding: 20px; color: #666;">Loading drivers...</div>
       </div>
     </div>
   `;
@@ -385,7 +443,7 @@ async function renderFeaturedDriverSection(container) {
   await loadFeaturedDriver(currentOffset);
 
   // Add event listener for refresh button, which picks a random driver to feature.
-  // REMEMBER: Fix this.
+  // This is broken, but team refresh works...
   document.getElementById('refreshDriverButton')?.addEventListener('click', async () => {
     currentOffset = Math.floor(Math.random() * 100); // Pick random driver for the featured card.
     await loadFeaturedDriver(currentOffset);
@@ -395,101 +453,198 @@ async function renderFeaturedDriverSection(container) {
   let searchInput = document.getElementById('driverSearch') as HTMLInputElement;
   searchInput.addEventListener('input', (e) => {
     let query = (e.target as HTMLInputElement).value;
-    loadAllDrivers(query);
+    loadDrivers(query);
   });
 
   // Also load the drivers grid, unfiltered at this point.
-  await loadAllDrivers();
+  await loadDrivers();
 }
 
 // Load a single featured driver by offs
 async function loadFeaturedDriver(offset = 20) {
   try {
-    let url = `${API_URL}/drivers?limit=1&offset=${offset}`;
+    let url = `${API_URL}/current/drivers?limit=1&offset=${offset}`;
     
     let resp = await fetch(url);
-    let data = await resp.json();
-    let driver = data.drivers?.[0];
-    
     let card = document.getElementById('featuredDriverCard');
     if (!card) return;
 
-    if (!resp.ok || !driver) {
+    if (!resp.ok) {
+      // Handle different HTTP status codes
+      if (resp.status === 429) {
+        card.innerHTML = '<div class="text-center py-8 text-yellow-600">⚠️ Rate limit reached. Please wait a moment before refreshing.</div>';
+        return;
+      } else {
+        card.innerHTML = '<div class="text-center py-8 text-red-500">❌ Unable to load driver data. Please try again later.</div>';
+        return;
+      }
+    }
+
+    let data = await resp.json();
+    let driver = data.drivers?.[0];
+
+    if (!driver) {
       card.innerHTML = '<div class="text-center py-8 text-gray-500">No driver data available</div>';
       return;
     }
 
     // Render the driver card, with basic info, wikipedia link, team and their number.
     card.innerHTML = `
-      <div class="bg-white rounded-lg shadow-lg p-8">
-      <a href="${driver.url || '#'}" target="_blank">
-        <div class="flex items-center space-x-6">
-          <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center">
-            <span class="text-indigo-600 font-bold text-2xl">${driver.number || '?'}</span>
+      <div style="background: white; border: 2px solid #ddd; padding: 20px;">
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+          <div style="width: 60px; height: 60px; background-color: #f0f0f0; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+            <strong style="color: #333; font-size: 18px;">#${driver.number || '?'}</strong>
           </div>
-          <div class="flex-1">
-            <h3 class="text-2xl font-bold text-gray-900">${driver.name} ${driver.surname}</h3>
-            <p class="text-lg text-gray-600">${driver.nationality}</p>
-            <p class="text-gray-500">Born: ${driver.birthday}</p>
-            <p class="text-gray-500">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
-            ${driver.url ? `<a href="${driver.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm">Wikipedia →</a>` : ''}
+          <div>
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 20px;">${driver.name} ${driver.surname}</h3>
+            <p style="margin: 0 0 3px 0; color: #666;">${driver.nationality}</p>
+            <p style="margin: 0; color: #999; font-size: 14px;">Born: ${driver.birthday}</p>
           </div>
         </div>
-        </a>
+        <div style="border-top: 1px solid #eee; padding-top: 10px;">
+          <p style="margin: 0 0 5px 0; color: #333; font-size: 14px;"><strong>Team:</strong> <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
+          ${driver.url ? `<a href="${driver.url}" target="_blank" style="color: #007bff; text-decoration: underline; font-size: 14px;">View Wikipedia Profile</a>` : ''}
+        </div>
       </div>
     `;
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Unable to load featured driver:', error);
     let card = document.getElementById('featuredDriverCard');
     if (card) {
-      card.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, no driver data found.</div>';
+      // likely rate limiting
+      if (error instanceof Error && error.message && error.message.includes('Unexpected token')) {
+        card.innerHTML = '<div class="text-center py-8 text-yellow-600">🚫 API rate limit reached. Please wait before trying again.</div>';
+      } else {
+        card.innerHTML = '<div class="text-center py-8 text-red-500">🛜 Network error occurred. Please check your connection and try again.</div>';
+      }
     }
   }
 }
 
-// Load and display all drivers, with optional search filtering
 async function loadAllDrivers(searchQuery = '') {
   try {
-    let url = `${API_URL}/drivers?limit=50`;
-    
+    let url = `${API_URL}/drivers`;
+
     let resp = await fetch(url);
+    let grid = document.getElementById('allDriversGrid');
+    if (!grid) return;
+
+    if (!resp.ok) {
+      // Handle different HTTP status codes
+      if (resp.status === 429) {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff9800;">⚠️ Rate limit reached. Please wait a moment.</div>';
+        return;
+      } else {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #f44336;">❌ Unable to load drivers list.</div>';
+        return;
+      }
+    }
+
     let data = await resp.json();
     let drivers = data.drivers || [];
     
     // Apply search filter if query provided
     if (searchQuery) {
-      drivers = drivers.filter(driver => 
+      drivers = drivers.filter((driver: { name: string; surname: string; nationality: string; }) => 
         driver.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         driver.surname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         driver.nationality?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     
-    let grid = document.getElementById('driversGrid');
-    if (!grid) return;
-
-    if (!resp.ok || drivers.length === 0) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">No drivers match your search</div>';
+    if (drivers.length === 0) {
+      if (searchQuery) {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No drivers match your search</div>';
+      } else {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No drivers available</div>';
+      }
       return;
     }
 
-    // Render the driver card, with basic info, wikipedia link, team and their number.
-    grid.innerHTML = drivers.map(driver => `
-      <div class="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
-      <a href="${driver.url || '#'}" target="_blank">
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-            <span class="text-indigo-600 font-bold">${driver.number || '?'}</span>
+    // Render driver cards with basic styling
+    grid.innerHTML = drivers.map((driver: { url: any; number: any; name: any; surname: any; nationality: any; birthday: any; teamId: string; }) => `
+      <div style="background: white; border: 1px solid #ddd; padding: 15px;">
+        <div style="display: flex; margin-bottom: 10px;">
+          <div style="width: 40px; height: 40px; background-color: #f5f5f5; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+            <strong style="color: #333; font-size: 14px;">#${driver.number || '?'}</strong>
           </div>
-          <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-900">${driver.name} ${driver.surname}</h3>
-            <p class="text-gray-600">${driver.nationality}</p>
-            <p class="text-gray-500 text-sm">Born: ${driver.birthday}</p>
-            <p class="text-gray-500 text-sm">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
+          <div>
+            <h4 style="margin: 0 0 3px 0; color: #333; font-size: 16px;">${driver.name} ${driver.surname}</h4>
+            <p style="margin: 0 0 2px 0; color: #666; font-size: 13px;">${driver.nationality}</p>
+            <p style="margin: 0 0 2px 0; color: #999; font-size: 12px;">Born: ${driver.birthday}</p>
+            <p style="margin: 0; color: #333; font-size: 12px;">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
           </div>
         </div>
-        </a>
+        ${driver.url ? `<a href="${driver.url}" target="_blank" style="color: #007bff; font-size: 12px; text-decoration: underline;">Wikipedia</a>` : ''}
+      </div>
+    `).join('');
+
+  } catch (error) {
+    console.error('Unable to load drivers list:', error);
+    let grid = document.getElementById('allDriversGrid');
+    if (grid) {
+      grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #f44336;">Network error occurred.</div>';
+    }
+  }
+}
+
+// Load and display current drivers, with optional search filtering
+async function loadDrivers(searchQuery = '') {
+  try {
+    let url = `${API_URL}/current/drivers`;
+    
+    let resp = await fetch(url);
+    let grid = document.getElementById('driversGrid');
+    if (!grid) return;
+
+    if (!resp.ok) {
+      // Handle different HTTP status codes
+      if (resp.status === 429) {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #ff9800;">⚠️ Rate limit reached. Please wait a moment.</div>';
+        return;
+      } else {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #f44336;">❌ Unable to load current drivers.</div>';
+        return;
+      }
+    }
+
+    let data = await resp.json();
+    let drivers = data.drivers || [];
+    
+    // Apply search filter if query provided
+    if (searchQuery) {
+      drivers = drivers.filter((driver: { name: string; surname: string; nationality: string; }) => 
+        driver.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        driver.surname?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        driver.nationality?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    if (drivers.length === 0) {
+      if (searchQuery) {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No current drivers match your search</div>';
+      } else {
+        grid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No current drivers available</div>';
+      }
+      return;
+    }
+
+    // Render current driver cards with basic styling
+    grid.innerHTML = drivers.map((driver: { url: any; number: any; name: any; surname: any; nationality: any; birthday: any; teamId: string; }) => `
+      <div style="background: white; border: 1px solid #ddd; padding: 12px;">
+        <div style="display: flex; margin-bottom: 8px;">
+          <div style="width: 35px; height: 35px; background-color: #e8f4fd; border: 1px solid #007bff; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+            <strong style="color: #007bff; font-size: 12px;">#${driver.number || '?'}</strong>
+          </div>
+          <div>
+            <h4 style="margin: 0 0 2px 0; color: #333; font-size: 14px;">${driver.name} ${driver.surname}</h4>
+            <p style="margin: 0 0 1px 0; color: #666; font-size: 12px;">${driver.nationality}</p>
+            <p style="margin: 0 0 1px 0; color: #999; font-size: 11px;">Born: ${driver.birthday}</p>
+            <p style="margin: 0; color: #333; font-size: 11px;">Team: <span class="${getTeamColourClass(driver.teamId)}">${driver.teamId}</span></p>
+          </div>
+        </div>
+        ${driver.url ? `<a href="${driver.url}" target="_blank" style="color: #007bff; font-size: 11px; text-decoration: underline;">Wikipedia</a>` : ''}
       </div>
     `).join('');
 
@@ -497,42 +652,58 @@ async function loadAllDrivers(searchQuery = '') {
     console.error('Unable to load drivers list:', error);
     let grid = document.getElementById('driversGrid');
     if (grid) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">An error has occurred, no drivers found.</div>';
+      // likely rate limiting
+      if (error instanceof Error && error.message && error.message.includes('Unexpected token')) {
+        grid.innerHTML = '<div class="col-span-full text-center py-8 text-yellow-600">🚫 API rate limit reached. Please wait before loading drivers.</div>';
+      } else {
+        grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">🛜 Network error occurred. Please check your connection and try again.</div>';
+      }
     }
   }
 }
 
 // Render the featured team section
-async function renderFeaturedTeamSection(container) {
+// Define interfaces for the team data
+interface Team {
+  teamName: string;
+  teamNationality: string;
+  constructorsChampionships?: number;
+  firstAppeareance?: string;
+  url?: string;
+}
+
+async function renderFeaturedTeamSection(container: HTMLElement): Promise<void> {
   // Basic layout with featured team and all teams grid
+
+  // Show different team is working, but driver one isn't, haven't looked too much into why...
   container.innerHTML = `
-    <div class="renderedSection">
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-900">🏁 Featured Team</h2>
-        <button id="refreshTeamBtn" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-          Next Team
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Featured Team</h2>
+        <button id="refreshTeamButton" style="padding: 10px 20px; background-color: #17a2b8; color: white; border: none; cursor: pointer;">
+          Show Different Team
         </button>
       </div>
-      <div id="featuredTeamCard" class="max-w-2xl">
-        <div class="text-center py-8">Loading featured team...</div>
+      
+      <div id="featuredTeamCard" style="margin-bottom: 30px;">
+        <div style="text-align: center; padding: 20px; color: #666;">Loading featured team...</div>
       </div>
       
-      <div class="border-t pt-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">All Teams</h3>
-        <div id="teamsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="text-center py-8">Loading teams...</div>
-        </div>
+      <hr style="margin: 30px 0; border: 1px solid #ddd;" />
+      
+      <h3 style="margin-bottom: 15px; color: #333;">All Teams</h3>
+      <div id="teamsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+        <div style="text-align: center; padding: 20px; color: #666;">Loading teams...</div>
       </div>
     </div>
   `;
 
-  let currentOffset = 0; // Start with first team
-
+  let currentOffset: number = 0; // Start with first team
   // Load featured team first
   await loadFeaturedTeam(currentOffset);
 
   // Handle refresh button clicks
-  document.getElementById('refreshTeamBtn')?.addEventListener('click', async () => {
+  document.getElementById('refreshTeamButton')?.addEventListener('click', async (): Promise<void> => {
     currentOffset = Math.floor(Math.random() * 10);
     await loadFeaturedTeam(currentOffset);
   });
@@ -559,21 +730,19 @@ async function loadFeaturedTeam(offset = 0) {
 
     // Render the team card with basic info and wikipedia link
     card.innerHTML = `
-      <div class="bg-white rounded-lg shadow-lg p-8">
-      <a href="${team.url || '#'}" target="_blank">
-        <div class="flex items-center space-x-6">
-          <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
-            <span class="text-red-600 font-bold text-lg">🏁</span>
+      <div style="background: white; border: 2px solid #ddd; padding: 20px;">
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+          <div style="width: 50px; height: 50px; background-color: #fff3cd; border: 1px solid #ffc107; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
+            <span style="color: #856404; font-size: 20px;">🏁</span>
           </div>
-          <div class="flex-1">
-            <h3 class="text-2xl font-bold"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
-            <p class="text-lg text-gray-600">${team.teamNationality}</p>
-            <p class="text-gray-500">Championships: ${team.constructorsChampionships || 0}</p>
-            <p class="text-gray-500">First appeared: ${team.firstAppeareance || 'Unknown'}</p>
-            ${team.url ? `<a href="${team.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm">View Wikipedia →</a>` : ''}
+          <div>
+            <h3 style="margin: 0 0 5px 0; color: #333; font-size: 18px;"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
+            <p style="margin: 0 0 3px 0; color: #666; font-size: 14px;">${team.teamNationality}</p>
+            <p style="margin: 0 0 3px 0; color: #999; font-size: 13px;">Championships: ${team.constructorsChampionships || 0}</p>
+            <p style="margin: 0; color: #999; font-size: 13px;">First appeared: ${team.firstAppeareance || 'Unknown'}</p>
           </div>
         </div>
-        </a>
+        ${team.url ? `<div style="border-top: 1px solid #eee; padding-top: 10px;"><a href="${team.url}" target="_blank" style="color: #007bff; text-decoration: underline; font-size: 14px;">View Wikipedia Profile</a></div>` : ''}
       </div>
     `;
 
@@ -604,17 +773,17 @@ async function loadAllTeams() {
     }
 
     // Render each team card with basic info, and wikipedia link
-    grid.innerHTML = teams.map(team => `
-      <div class="rounded-lg shadow bg-white  p-6 hover:shadow-md transition-shadow">
+    grid.innerHTML = teams.map((team: { url: any; teamName: string; teamNationality: any; constructorsChampionships: any; }) => `
+      <div class="bg-white rounded shadow p-4 hover:shadow-md">
       <a href="${team.url || '#'}" target="_blank">
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12  rounded-full flex bg-red-100 items-center justify-center">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-3">
             <span class="text-red-600 font-bold">🏁</span>
           </div>
-          <div class="flex-1">
-            <h3 class="text-lg font-semibold"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
-            <p class="text-gray-600">${team.teamNationality}</p>
-            <p class="text-gray-500 text-sm">Championships: ${team.constructorsChampionships || 0}</p>
+          <div>
+            <h3 class="font-semibold"><span class="${getTeamColourClass(team.teamName)}">${team.teamName}</span></h3>
+            <p class="text-gray-600 text-sm">${team.teamNationality}</p>
+            <p class="text-gray-500 text-xs">Championships: ${team.constructorsChampionships || 0}</p>
           </div>
         </div>
         </a>
@@ -631,18 +800,18 @@ async function loadAllTeams() {
 }
 
 // Render the race weekend section, showing latest race data (not live or even close to live for that matter!)
-async function renderRaceWeekendSection(container) {
+async function renderRaceWeekendSection(container: HTMLElement) {
   // Basic layout
   container.innerHTML = `
     <div class="renderedSection">
-      <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-gray-900">🏆 Latest Race Weekend Data</h2>
-        <button id="refreshRaceWeekendButton" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">🏆 Latest Race Weekend Data</h2>
+        <button id="refreshRaceWeekendButton" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Refresh Data
         </button>
       </div>
       
-      <div id="raceWeekendData" class="space-y-6">
+      <div id="raceWeekendData" class="space-y-4">
         <div class="text-center py-8">Loading race weekend data...</div>
       </div>
     </div>
@@ -665,9 +834,6 @@ async function loadRaceWeekendData() {
     let resp = await fetch(url);
     let data = await resp.json();
     
-    // REMEMBER: remove this debug statement before submission, having some issues with rate limiting at the moment :(
-    console.log('Race weekend data:', data);
-    
     let container = document.getElementById('raceWeekendData');
     if (!container) return;
 
@@ -688,21 +854,20 @@ async function loadRaceWeekendData() {
     let schedule = race.schedule || {};
 
     // Render the race information, session schedule and circuit details
-    // ALERT: Some of this code was auto-completed by GitHub Copilot, I am reviewing it still and will be confirmed before submission.
+    var formatDate = schedule.race?.date ? new Date(schedule.race?.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A';
     container.innerHTML = `
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Race Information -->
         <div class="bg-white rounded-lg shadow-lg p-6">
           <h3 class="text-xl font-bold text-gray-900 mb-4">📍 ${race.raceName}</h3>
           <div class="space-y-2">
-            <p class="text-gray-600"><strong>Round:</strong> ${race.round}</p>
-            <p class="text-gray-600"><strong>Race Date:</strong> ${schedule.race?.date}</p>
-            <p class="text-gray-600"><strong>Circuit:</strong> ${race.circuit?.circuitName}</p>
-            <p class="text-gray-600"><strong>Location:</strong> ${race.circuit?.city}, ${race.circuit?.country}</p>
-            <p class="text-gray-600"><strong>Winner:</strong> ${race.winner?.name} ${race.winner?.surname}</p>
-            <p class="text-gray-600"><strong>Fastest Lap:</strong> ${race.fast_lap?.fast_lap || 'N/A'}</p>
-            ${race.url ? `<a href="${race.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm">More details →</a>` : ''}
+            <p class="text-gray-900"><strong>Round:</strong> ${race.round}</p>
+            <p class="text-gray-900"><strong>Race Date:</strong> ${formatDate}</p>
+            <p class="text-gray-900"><strong>Circuit:</strong> ${race.circuit?.circuitName}</p>
+            <p class="text-gray-900"><strong>Location:</strong> ${race.circuit?.city}, ${race.circuit?.country}</p>
+            <p class="text-gray-900"><strong>Winner:</strong> ${race.winner?.name} ${race.winner?.surname}</p>
+            <p class="text-gray-900"><strong>Fastest Lap:</strong> ${race.fast_lap?.fast_lap || 'N/A'}</p>
           </div>
+          ${race.url ? `<a href="${race.url}" target="_blank" class="mt-4 block text-indigo-600 hover:text-indigo-900 text-sm">More details →</a>` : ''}
         </div>
 
         <!-- Session Schedule -->
@@ -771,7 +936,15 @@ async function loadRaceWeekendData() {
 }
 
 // Render the highlights section, with latest YouTube highlights and 2024 season overview
-async function renderHighlightsSection(container) {
+// Define interfaces for the data structures
+interface HighlightData {
+  title: string;
+  videoId: string;
+  publishedAt: string;
+  thumbnailUrl: string;
+}
+
+async function renderHighlightsSection(container: HTMLElement): Promise<void> {
   // Basic layout with featured highlight and season overview
   container.innerHTML = `
     <div class="renderedSection">
@@ -796,7 +969,7 @@ async function renderHighlightsSection(container) {
   `;
 
   // Set up the refresh button
-  document.getElementById('refreshHighlightsButton')?.addEventListener('click', async () => {
+  document.getElementById('refreshHighlightsButton')?.addEventListener('click', async (): Promise<void> => {
     await loadHighlightsData();
   });
 
@@ -815,7 +988,7 @@ async function loadHighlightsData() {
 // Load and display 2024 season overview, I could make a convuluted way to check whether the season is ongoing or not and make it dynamic, but no.
 async function loadSeasonData() {
   try {
-    let url = `${API_URL}/seasons/2024`;
+    let url = `${API_URL}/races/2024`;
     
     let resp = await fetch(url);
     let data = await resp.json();
@@ -830,27 +1003,49 @@ async function loadSeasonData() {
     }
 
     // Render a summary of the season, listing all races.
+    // Define interfaces for formula 1 race data
+    interface Winner {
+      name: string | null;
+      surname: string | null;
+    }
+
+    interface Schedule {
+      race?: {
+      date: string;
+      };
+    }
+
+    interface Circuit {
+      country: string;
+    }
+
+    interface Race {
+      raceName: string;
+      round: string | number;
+      schedule?: Schedule;
+      circuit?: Circuit;
+      winner?: Winner;
+    }
+
     container.innerHTML = `
       <div class="bg-white rounded-lg shadow p-6">
-        <h4 class="text-lg font-semibold text-gray-900">2024 F1 Season</h4>
-        <p class="text-gray-600">${races.length} races scheduled</p>
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          ${races.slice(0, 9).map(race => `
-            <div class="border rounded p-3 hover:shadow-md transition-shadow">
-              <h5 class="font-medium text-sm">${race.raceName}</h5>
-              <p class="text-xs text-gray-500">Round ${race.round} - ${race.schedule?.race?.date}</p>
-              <p class="text-xs text-gray-500">${race.circuit?.country}</p>
-              <p class="text-xs text-gray-500">Winner: ${race.winner?.name} ${race.winner?.surname}</p>
-            </div>
-          `).join('')}
+      <h4 class="text-lg font-semibold text-gray-900">2024 F1 Season</h4>
+      <p class="text-gray-600">${races.length} races scheduled</p>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${races.slice(0, 9).map((race: Race) => `
+        <div class="border rounded p-3 hover:shadow-md transition-shadow">
+          <h5 class="font-medium text-sm">${race.raceName}</h5>
+          <p class="text-xs text-gray-500">Round ${race.round} - ${race.schedule?.race?.date}</p>
+          <p class="text-xs text-gray-500">${race.circuit?.country}</p>
+          <p class="text-xs text-gray-500">Winner: ${race.winner?.name} ${race.winner?.surname}</p>
         </div>
-        ${races.length > 9 ? `<p class="text-sm text-gray-500 mt-2">... and ${races.length - 9} more races</p>` : ''}
+        `).join('')}
+      </div>
+      ${races.length > 9 ? `<p class="text-sm text-gray-500 mt-2">... and ${races.length - 9} more races</p>` : ''}
       </div>
     `;
 
   } catch (error) {
-    // REMEMBER: debug statement to be removed before submission
-    console.error('Unable to load season data:', error);
     let container = document.getElementById('seasonData');
     if (container) {
       container.innerHTML = '<div class="text-center py-8 text-red-500">An error has occurred, season data has not loaded.</div>';
