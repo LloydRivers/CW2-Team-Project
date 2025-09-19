@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.renderedSection {
+    min-height: 100vh;
+    margin-top: 1.5rem;
+    background-color: #F9FAFB;
+}
+
+.nav-btn {
+    padding-left: 0.75rem; 
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 5%;
+    font-weight: 500; 
+    color: #4B5563;
+}
+
+@keyframes navHover {
+    from { background-color: #F9FAFB; color: #4B5563; transform: scale(1); }
+    to { background-color: #E5E7EB; color: #19202a; transform: scale(1.05); }
+}
+
+.nav-btn:hover {
+    animation: navHover 0.5s ease-in-out forwards;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fadeinTransition {
+    opacity: 0;
+    animation: fadeIn 0.7s ease-in-out forwards;
+}
+
+.ferrariRed {
+    color: #DC0000;
+}
+
+.mclarenOrange {
+    color: #FF8700;
+}
+
+.visaBlue {
+    color: #1A1F71;
+}
+
+.haasGray {
+    color: #B6B6B6;
+}
+
+.kickGreen {
+    color: #00FF00;
+}
+
+.redbullBlue {
+    color: #1E41FF;
+}
+
+.alpineBlue {
+    color: #0090FF;
+}
+
+.mercedesGreen {
+    color: #00D2BE;
+}
+
+.williamsBlue {
+    color: #005AFF;
+}
+
+.astonmartinGreen {
+    color: #006F62;
+}
